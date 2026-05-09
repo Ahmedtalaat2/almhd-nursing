@@ -1,967 +1,2497 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      content="width=device-width,initial-scale=1.0,viewport-fit=cover"
     />
-    <meta
-      name="description"
-      content="Premium home nursing care in Qatar by Al MHD Nursing — Professional, compassionate nurses at your doorstep. Book in minutes, trusted by families across Doha."
-    />
-    <meta
-      name="keywords"
-      content="home nursing Qatar, elderly care Qatar, home healthcare Doha, Al MHD Nursing, nursing care at home"
-    />
-    <meta name="author" content="Al MHD Nursing" />
-    <title>Al MHD Nursing | Premium Home Healthcare Qatar</title>
+    <title>CareQatar | خدمة التمريض المنزلي في قطر</title>
 
-    <!-- Google Fonts + Font Awesome -->
+    <!--
+  ═══════════════════════════════════════════════════════
+  إعداد Google Sheets — خطوات الربط:
+  1. افتح sheet.new وأنشئ جدول جديد
+  2. افتح Extensions › Apps Script والصق الكود التالي:
+
+  function doPost(e){
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var d = JSON.parse(e.parameter.payload);
+    sheet.appendRow([
+      new Date(), d.patientName, d.service, d.condition,
+      d.age, d.duration, d.price, d.date, d.time,
+      d.area, d.phone, d.lang, d.submittedAt
+    ]);
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  function doGet(e){ return ContentService.createTextOutput('CareQatar Webhook Active'); }
+
+  3. Deploy › New deployment › Web App
+     Execute as: Me | Who has access: Anyone
+  4. انسخ رابط الـ Deployment وضعه في متغير SHEETS_URL أدناه
+  ═══════════════════════════════════════════════════════
+  -->
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
 
     <style>
+      /* ── RESET & ROOT ─────────────────────────── */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
       :root {
-        --primary-blue: #1e88e5;
-        --dark-blue: #1565c0;
-        --light-blue: #e3f2fd;
-        --primary-green: #43a047;
-        --light-green: #e8f5e9;
-        --text-dark: #1a1a1a;
-        --text-gray: #555555;
-        --bg-light: #f7fafc;
-        --white: #ffffff;
-        --shadow-sm:
-          0 10px 25px -5px rgba(0, 0, 0, 0.05),
-          0 8px 10px -6px rgba(0, 0, 0, 0.02);
-        --shadow-md: 0 20px 25px -12px rgba(0, 0, 0, 0.08);
-        --shadow-lg: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
-        --border-radius-card: 1.5rem;
-        --border-radius-pill: 3rem;
+        --pr: #1b6b75;
+        --pr-l: #2a9aa8;
+        --pr-ul: #e8f7f9;
+        --gr: #27ae60;
+        --gr-l: #eaf7ef;
+        --ac: #e8734a;
+        --dark: #0f2027;
+        --text: #1e2b37;
+        --muted: #5c6f7a;
+        --bg: #f4fafb;
+        --bg2: #fdf9f4;
+        --white: #fff;
+        --bd: #dde8ea;
+        --sh-sm: 0 2px 8px rgba(27, 107, 117, 0.08);
+        --sh-md: 0 8px 32px rgba(27, 107, 117, 0.12);
+        --sh-lg: 0 20px 60px rgba(27, 107, 117, 0.18);
+        --r-sm: 12px;
+        --r-md: 20px;
+        --r-lg: 32px;
+        --ff-en: "Plus Jakarta Sans", sans-serif;
+        --ff-ar: "Cairo", sans-serif;
       }
-
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: var(--white);
-        color: var(--text-dark);
-        line-height: 1.5;
+      html {
         scroll-behavior: smooth;
       }
-
-      /* RTL Support - refined */
-      body.rtl {
+      body {
+        font-family: var(--ff-ar);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
         direction: rtl;
-        text-align: right;
       }
-      body.rtl .button-group,
-      body.rtl .trust-icons,
-      body.rtl .step-indicator {
-        justify-content: center;
+      body.en {
+        direction: ltr;
+        font-family: var(--ff-en);
       }
-      body.rtl .fa-chevron-down {
-        margin-left: 0;
-        margin-right: auto;
-      }
-      body.rtl .chatbot-float {
-        right: auto;
-        left: 1rem;
-      }
-      body.rtl .chat-window-ui {
-        right: auto;
-        left: 0;
-      }
-      body.rtl .mobile-menu {
-        left: auto;
-        right: -100%;
-      }
-      body.rtl .mobile-menu.open {
-        left: auto;
-        right: 0;
-      }
-
       .container {
-        width: 100%;
-        max-width: 1280px;
+        max-width: 1260px;
         margin: 0 auto;
-        padding: 0 1.25rem;
+        padding: 0 20px;
       }
 
-      /* Buttons with soft glow — fully responsive */
-      .btn-primary {
-        background: linear-gradient(
-          105deg,
-          var(--primary-blue) 0%,
-          var(--primary-green) 100%
-        );
-        color: white;
-        border: none;
-        padding: 0.9rem 1.5rem;
-        border-radius: var(--border-radius-pill);
+      /* ── EMERGENCY BAR ─────────────────────── */
+      .ebar {
+        background: var(--pr);
+        color: #fff;
+        text-align: center;
+        padding: 7px 16px;
+        font-size: 12.5px;
         font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-        box-shadow: 0 8px 18px rgba(30, 136, 229, 0.2);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-        width: 100%;
+      }
+      .ebar a {
+        color: #a8eef3;
+        text-decoration: none;
+      }
+      .ebar strong {
+        color: #d4f5f8;
       }
 
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 22px -8px rgba(30, 136, 229, 0.5);
-      }
-
-      .btn-outline {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(4px);
-        border: 1.5px solid var(--primary-blue);
-        color: var(--primary-blue);
-        padding: 0.8rem 1.5rem;
-        border-radius: var(--border-radius-pill);
-        font-weight: 600;
-        transition: all 0.2s;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-        width: 100%;
-      }
-
-      .btn-outline:hover {
-        background: var(--light-blue);
-        transform: translateY(-2px);
-      }
-
-      section {
-        padding: 3rem 0;
-      }
-
-      /* Glass header - responsive sticky */
-      .glass-header {
-        position: fixed;
+      /* ── HEADER ────────────────────────────── */
+      .hdr {
+        position: sticky;
         top: 0;
-        left: 0;
-        width: 100%;
-        backdrop-filter: blur(12px);
-        background: rgba(255, 255, 255, 0.85);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-        z-index: 1000;
-        padding: 0.8rem 0;
+        z-index: 500;
+        background: rgba(244, 250, 251, 0.93);
+        backdrop-filter: blur(22px);
+        border-bottom: 1px solid var(--bd);
+        padding: 11px 0;
       }
-
-      .nav-container {
+      .hdr-inner {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 1.25rem;
-        max-width: 1280px;
-        margin: 0 auto;
+        gap: 12px;
       }
-
       .logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 1.4rem;
         font-weight: 800;
-        font-size: 1.3rem;
-        background: linear-gradient(
-          120deg,
-          var(--primary-blue),
-          var(--primary-green)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        color: var(--pr);
+        text-decoration: none;
         letter-spacing: -0.02em;
       }
-
-      /* Desktop nav */
-      .nav-links {
-        display: none;
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--pr);
+        border-radius: 9px;
+        display: flex;
         align-items: center;
-        gap: 2rem;
+        justify-content: center;
+        color: #fff;
+        font-size: 17px;
+        flex-shrink: 0;
       }
-      .nav-links a {
+      /* desktop nav */
+      .hdr-nav {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .hdr-nav a {
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 7px 13px;
+        border-radius: var(--r-sm);
         text-decoration: none;
-        font-weight: 500;
-        color: var(--text-dark);
-        transition: color 0.2s;
+        transition: 0.18s;
+        white-space: nowrap;
       }
-      .nav-links a:hover {
-        color: var(--primary-blue);
+      .hdr-nav a:hover {
+        color: var(--pr);
+        background: var(--pr-ul);
       }
-
-      .hamburger {
-        display: block;
-        font-size: 1.6rem;
+      .hdr-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .lang-btn {
+        background: var(--white);
+        border: 1.5px solid var(--bd);
+        padding: 6px 15px;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 0.8rem;
         cursor: pointer;
-        color: var(--primary-blue);
+        color: var(--pr);
+        transition: 0.18s;
+        white-space: nowrap;
+      }
+      .lang-btn:hover {
+        border-color: var(--pr);
+        background: var(--pr-ul);
+      }
+      /* hamburger */
+      .ham {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        color: var(--pr);
+        font-size: 21px;
+      }
+      @media (max-width: 860px) {
+        .hdr-nav {
+          display: none;
+        }
+        .ham {
+          display: flex;
+        }
       }
 
-      .mobile-menu {
+      /* mobile drawer */
+      .drawer-bg {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 32, 39, 0.55);
+        z-index: 600;
+        backdrop-filter: blur(3px);
+      }
+      .drawer-bg.open {
+        display: block;
+      }
+      .drawer {
         position: fixed;
         top: 0;
-        left: -100%;
-        width: 75%;
-        max-width: 280px;
-        height: 100vh;
-        background: white;
-        box-shadow: var(--shadow-lg);
-        z-index: 1001;
-        padding: 2rem 1.5rem;
-        transition: left 0.3s ease;
+        right: 0;
+        bottom: 0;
+        width: 270px;
+        background: #fff;
+        z-index: 700;
+        padding: 24px 20px;
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 6px;
+        box-shadow: var(--sh-lg);
+        transform: translateX(100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      .mobile-menu.open {
+      body.en .drawer {
+        right: auto;
         left: 0;
+        transform: translateX(-100%);
       }
-      .mobile-menu a {
-        text-decoration: none;
-        font-size: 1.2rem;
-        font-weight: 500;
-        color: var(--text-dark);
-        padding: 0.5rem 0;
+      .drawer.open {
+        transform: translateX(0);
       }
-      .close-menu {
-        align-self: flex-end;
-        font-size: 1.8rem;
+      body.en .drawer.open {
+        transform: translateX(0);
+      }
+      .drawer-close {
+        align-self: flex-start;
+        background: none;
+        border: none;
+        font-size: 20px;
         cursor: pointer;
+        color: var(--muted);
+        margin-bottom: 10px;
+        padding: 4px;
       }
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        display: none;
+      .drawer a {
+        color: var(--text);
+        font-size: 0.97rem;
+        font-weight: 600;
+        padding: 12px 14px;
+        border-radius: var(--r-sm);
+        text-decoration: none;
+        transition: 0.18s;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .drawer a:hover {
+        background: var(--pr-ul);
+        color: var(--pr);
+      }
+      .drawer hr {
+        border: none;
+        border-top: 1px solid var(--bd);
+        margin: 8px 0;
       }
 
-      /* Hero Section — robust responsiveness */
-      .hero-section {
-        padding-top: 7rem;
-        padding-bottom: 2rem;
-        text-align: center;
-        position: relative;
-        min-height: auto;
+      /* ── BUTTONS ────────────────────────────── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 12px 26px;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+        text-decoration: none;
+        font-family: inherit;
       }
-      .hero-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("https://placehold.co/1600x1000/E3F2FD/1E88E5?text=Premium+Nursing+Care+Qatar");
-        background-size: cover;
-        background-position: center;
-        filter: blur(5px) brightness(1.02);
-        z-index: -2;
+      .btn-pr {
+        background: var(--pr);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(27, 107, 117, 0.28);
       }
-      .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+      .btn-pr:hover {
+        background: var(--pr-l);
+        transform: translateY(-2px);
+      }
+      .btn-pr:disabled {
+        opacity: 0.55;
+        transform: none;
+        cursor: not-allowed;
+      }
+      .btn-ol {
+        background: transparent;
+        border: 2px solid var(--pr);
+        color: var(--pr);
+      }
+      .btn-ol:hover {
+        background: var(--pr-ul);
+      }
+      .btn-wa {
+        background: #25d366;
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(37, 211, 102, 0.28);
+      }
+      .btn-wa:hover {
+        background: #1da851;
+        transform: translateY(-2px);
+      }
+      .btn-sm {
+        padding: 9px 18px;
+        font-size: 0.82rem;
+      }
+
+      /* ── HERO ───────────────────────────────── */
+      .hero {
         background: linear-gradient(
-          145deg,
-          rgba(255, 255, 255, 0.88) 0%,
-          rgba(227, 242, 253, 0.75) 50%,
-          rgba(232, 245, 233, 0.75) 100%
+          135deg,
+          #e5f4f7 0%,
+          #ecf8f0 55%,
+          #fdf2ec 100%
         );
-        z-index: -1;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
       }
-      .hero-content {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 0 1rem;
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        width: 520px;
+        height: 520px;
+        background: radial-gradient(
+          circle,
+          rgba(27, 107, 117, 0.07),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        bottom: -60px;
+        right: -60px;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(39, 174, 96, 0.055),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        align-items: center;
+        max-width: 1180px;
+        width: 100%;
         position: relative;
         z-index: 2;
-        animation: fadeSlideUp 0.7s ease-out;
       }
-      @keyframes fadeSlideUp {
-        0% {
-          opacity: 0;
-          transform: translateY(25px);
+      @media (max-width: 860px) {
+        .hero-wrap {
+          grid-template-columns: 1fr;
+          gap: 28px;
         }
-        100% {
+        .hero-copy {
+          text-align: center;
+          order: 2;
+        }
+        .hero-form-col {
+          order: 1;
+        }
+      }
+      .hero-copy h1 {
+        font-size: clamp(1.8rem, 3.6vw, 3rem);
+        font-weight: 800;
+        line-height: 1.18;
+        color: var(--dark);
+        margin-bottom: 16px;
+        letter-spacing: -0.025em;
+      }
+      .hero-copy h1 span {
+        color: var(--pr);
+      }
+      .hero-copy p {
+        font-size: 1rem;
+        color: var(--muted);
+        margin-bottom: 28px;
+        max-width: 470px;
+        line-height: 1.75;
+      }
+      @media (max-width: 860px) {
+        .hero-copy p {
+          margin-inline: auto;
+          margin-bottom: 28px;
+        }
+      }
+      .lic-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--pr-ul);
+        border: 1.5px solid rgba(27, 107, 117, 0.22);
+        border-radius: var(--r-sm);
+        padding: 8px 14px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--pr);
+        margin-bottom: 18px;
+      }
+      .hero-stats {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 860px) {
+        .hero-stats {
+          justify-content: center;
+        }
+      }
+      .hs {
+        text-align: center;
+      }
+      .hs .n {
+        font-size: 1.55rem;
+        font-weight: 800;
+        color: var(--pr);
+        display: block;
+        line-height: 1;
+      }
+      .hs .l {
+        font-size: 0.72rem;
+        color: var(--muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: block;
+        margin-top: 3px;
+      }
+
+      /* ── BOOKING CARD ───────────────────────── */
+      .bc {
+        background: #fff;
+        border-radius: 28px;
+        padding: 30px 28px;
+        box-shadow: var(--sh-lg);
+        border: 1px solid var(--bd);
+      }
+      @media (max-width: 420px) {
+        .bc {
+          padding: 22px 16px;
+          border-radius: 20px;
+        }
+      }
+
+      /* price strip */
+      .price-strip {
+        background: var(--pr-ul);
+        border: 1.5px solid rgba(27, 107, 117, 0.18);
+        border-radius: var(--r-sm);
+        padding: 11px 15px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ps-from {
+        font-size: 0.73rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .ps-val {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--pr);
+      }
+      .ps-incl {
+        text-align: start;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      /* progress */
+      .prog-wrap {
+        margin-bottom: 20px;
+      }
+      .prog-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .prog-lbl {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .prog-pct {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--pr);
+      }
+      .prog-bar {
+        display: flex;
+        gap: 5px;
+      }
+      .pb {
+        flex: 1;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--bd);
+        transition: background 0.3s;
+      }
+      .pb.done {
+        background: var(--pr);
+      }
+      .pb.active {
+        background: var(--pr-l);
+      }
+
+      /* quiz */
+      .qstep {
+        display: none;
+      }
+      .qstep.active {
+        display: block;
+        animation: su 0.25s ease;
+      }
+      @keyframes su {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-      .trust-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(8px);
-        border-radius: 40px;
-        padding: 0.35rem 1rem;
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--dark-blue);
-        margin-bottom: 1rem;
-      }
-      h1 {
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        line-height: 1.25;
-        margin-bottom: 0.5rem;
-      }
-      .gradient-text {
-        background: linear-gradient(
-          120deg,
-          var(--primary-blue),
-          var(--primary-green)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-      .hero-sub {
+      .q-title {
         font-size: 0.95rem;
-        color: var(--text-gray);
-        margin: 1rem 0 1.5rem;
-        padding: 0 0.5rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 13px;
       }
-      .button-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        margin-top: 1rem;
+      .q-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
       }
-      .trust-icons {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1.8rem;
-        flex-wrap: wrap;
+      .q-grid.c3 {
+        grid-template-columns: repeat(3, 1fr);
       }
-      .trust-item {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(4px);
-        padding: 0.4rem 1rem;
-        border-radius: 40px;
-        font-weight: 500;
-        font-size: 0.75rem;
+      @media (max-width: 400px) {
+        .q-grid.c3 {
+          grid-template-columns: 1fr 1fr;
+        }
       }
-
-      /* Sticky Mobile CTA - hidden on desktop */
-      .sticky-cta {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-        padding: 0.75rem 1rem;
-        display: flex;
-        gap: 0.8rem;
-        z-index: 99;
-        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
-      }
-      .sticky-cta .btn-primary,
-      .sticky-cta .btn-outline {
-        padding: 0.7rem 0.8rem;
-        font-size: 0.9rem;
-        margin: 0;
-      }
-
-      /* Step booking */
-      .step-indicator {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .step-btn {
-        background: var(--bg-light);
-        border-radius: 2rem;
-        padding: 0.5rem 1.2rem;
-        font-weight: 600;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .step-btn.active-step {
-        background: var(--primary-blue);
-        color: white;
-      }
-      .booking-card-form {
-        background: white;
-        border-radius: 1.5rem;
-        padding: 1.5rem;
-        box-shadow: var(--shadow-md);
-      }
-      .service-option {
-        background: var(--bg-light);
-        border-radius: 1rem;
-        padding: 0.9rem;
+      .qo {
+        background: var(--bg);
+        border: 1.5px solid var(--bd);
+        border-radius: var(--r-sm);
+        padding: 13px 10px;
         cursor: pointer;
         text-align: center;
-        font-weight: 500;
-        transition: all 0.2s;
+        font-weight: 600;
+        font-size: 0.82rem;
+        color: var(--text);
+        transition: all 0.18s;
+        font-family: inherit;
+        line-height: 1.4;
       }
-      .service-option.selected {
-        background: var(--light-blue);
-        border: 1px solid var(--primary-blue);
+      .qo:hover {
+        border-color: var(--pr-l);
+        background: var(--pr-ul);
+        color: var(--pr);
       }
-      select,
-      input {
-        width: 100%;
-        padding: 0.9rem;
-        border-radius: 1.5rem;
-        border: 1px solid #e2e8f0;
+      .qo.sel {
+        border-color: var(--pr);
+        background: var(--pr-ul);
+        color: var(--pr);
+        box-shadow: 0 0 0 3px rgba(27, 107, 117, 0.1);
+      }
+      .qo i {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 6px;
+        color: var(--pr);
+      }
+      /* rec card */
+      .rec {
+        background: linear-gradient(135deg, var(--pr-ul), #eaf8f0);
+        border: 1.5px solid rgba(27, 107, 117, 0.18);
+        border-radius: var(--r-sm);
+        padding: 16px;
+        margin-bottom: 16px;
+        text-align: center;
+      }
+      .rec-name {
         font-size: 1rem;
-        margin: 0.5rem 0;
+        font-weight: 800;
+        color: var(--pr);
+      }
+      .rec-p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      /* form fields */
+      .fg {
+        margin-bottom: 12px;
+      }
+      .fg label {
+        display: block;
+        font-size: 0.73rem;
+        font-weight: 700;
+        color: var(--muted);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .fc {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--bd);
+        border-radius: var(--r-sm);
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: var(--text);
+        background: #fff;
+        transition: 0.18s;
+      }
+      .fc:focus {
+        outline: none;
+        border-color: var(--pr);
+        box-shadow: 0 0 0 3px rgba(27, 107, 117, 0.1);
+      }
+      .fc.err {
+        border-color: #e24b4a;
+      }
+      .ferr {
+        font-size: 0.74rem;
+        color: #e24b4a;
+        margin-top: 3px;
+        display: none;
+      }
+      .ferr.show {
+        display: block;
+      }
+      /* actions */
+      .sa {
+        display: flex;
+        gap: 8px;
+        margin-top: 18px;
+        justify-content: flex-end;
+      }
+      .sa .btn-ol {
+        padding: 9px 17px;
+        font-size: 0.82rem;
+      }
+      /* privacy note */
+      .pnote {
+        display: flex;
+        align-items: flex-start;
+        gap: 7px;
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-bottom: 10px;
+        line-height: 1.6;
+      }
+      .pnote i {
+        color: var(--pr);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      /* success */
+      .succ {
+        text-align: center;
+        padding: 10px 0;
+      }
+      .succ-ic {
+        width: 68px;
+        height: 68px;
+        background: var(--gr-l);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        font-size: 28px;
+        color: var(--gr);
+      }
+      .succ h3 {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 8px;
+      }
+      .succ p {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-bottom: 18px;
+        line-height: 1.7;
       }
 
-      /* Cards grid fully responsive */
-      .cards-grid {
+      /* ── TRUST STRIP ─────────────────────────── */
+      .tstrip {
+        background: #fff;
+        border-bottom: 1px solid var(--bd);
+        padding: 0;
+      }
+      .tstrip-inner {
+        display: flex;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .tstrip-inner::-webkit-scrollbar {
+        display: none;
+      }
+      .ti {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 14px 24px;
+        border-inline-end: 1px solid var(--bd);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .ti:last-child {
+        border: none;
+      }
+      .ti i {
+        font-size: 18px;
+        color: var(--pr);
+      }
+      .ti .tl {
+        font-size: 0.7rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .ti .tv {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: var(--dark);
+      }
+
+      /* ── SECTIONS ───────────────────────────── */
+      section {
+        padding: 72px 0;
+      }
+      .sec-lbl {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--pr);
+        margin-bottom: 10px;
+      }
+      .sec-h {
+        font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 14px;
+        line-height: 1.22;
+        letter-spacing: -0.025em;
+      }
+      .sec-p {
+        font-size: 0.95rem;
+        color: var(--muted);
+        max-width: 520px;
+        line-height: 1.75;
+      }
+      .sh {
+        margin-bottom: 44px;
+      }
+      .sh.ctr {
+        text-align: center;
+      }
+      .sh.ctr .sec-p {
+        margin-inline: auto;
+      }
+      .bg2 {
+        background: var(--bg2);
+      }
+
+      /* ── PRICING ─────────────────────────────── */
+      .pg {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+      }
+      .pc {
+        background: #fff;
+        border: 1.5px solid var(--bd);
+        border-radius: var(--r-md);
+        padding: 26px 22px;
+        position: relative;
+        transition: 0.28s;
+      }
+      .pc:hover {
+        border-color: var(--pr-l);
+        box-shadow: var(--sh-md);
+        transform: translateY(-4px);
+      }
+      .pc.feat {
+        border-color: var(--pr);
+        box-shadow: var(--sh-md);
+      }
+      .feat-b {
+        position: absolute;
+        top: -13px;
+        right: 50%;
+        transform: translateX(50%);
+        background: var(--pr);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 4px 14px;
+        border-radius: 60px;
+        white-space: nowrap;
+      }
+      body.en .feat-b {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .p-ic {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--pr-ul);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: var(--pr);
+        margin-bottom: 14px;
+      }
+      .p-name {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 5px;
+      }
+      .p-price {
+        font-size: 1.9rem;
+        font-weight: 800;
+        color: var(--pr);
+        line-height: 1;
+      }
+      .p-price span {
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .p-feats {
+        list-style: none;
+        margin: 15px 0 20px;
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
+        gap: 9px;
       }
-      .service-card,
-      .nurse-card {
-        background: white;
-        border-radius: 1.5rem;
-        padding: 1.3rem;
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow-sm);
-      }
-      .nurse-card {
-        padding: 0;
-        overflow: hidden;
-      }
-      .nurse-card img {
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
-      }
-      .testimonial-scroll {
+      .p-feats li {
         display: flex;
-        gap: 1rem;
-        overflow-x: auto;
-        padding-bottom: 0.8rem;
-        scroll-snap-type: x mandatory;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 0.83rem;
+        color: var(--muted);
       }
-      .testimonial-card {
-        min-width: 85%;
-        background: var(--bg-light);
-        border-radius: 1.2rem;
-        padding: 1.2rem;
-        scroll-snap-align: start;
-      }
-      .faq-item {
-        border-bottom: 1px solid #e2edf7;
-        padding: 0.9rem 0;
-      }
-      .faq-question {
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-      }
-      .faq-answer {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
+      .p-feats li i {
+        color: var(--gr);
+        margin-top: 2px;
+        flex-shrink: 0;
       }
 
-      /* Chatbot */
-      .chatbot-float {
-        position: fixed;
-        bottom: 5rem;
-        right: 1rem;
-        z-index: 100;
+      /* ── SERVICES ────────────────────────────── */
+      .sg {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
       }
-      .chat-toggle-btn {
+      .svc {
+        background: #fff;
+        border-radius: var(--r-md);
+        padding: 26px 22px;
+        border: 1px solid var(--bd);
+        transition: 0.28s;
+        cursor: pointer;
+      }
+      .svc:hover {
+        border-color: var(--pr-l);
+        box-shadow: var(--sh-md);
+        transform: translateY(-5px);
+      }
+      .svc-ic {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        margin-bottom: 18px;
+      }
+      .ic-t {
+        background: var(--pr-ul);
+        color: var(--pr);
+      }
+      .ic-g {
+        background: var(--gr-l);
+        color: var(--gr);
+      }
+      .ic-o {
+        background: #fff4ef;
+        color: var(--ac);
+      }
+      .ic-b {
+        background: #eef3ff;
+        color: #3b82f6;
+      }
+      .svc h3 {
+        font-size: 0.97rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 7px;
+      }
+      .svc p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 13px;
+        line-height: 1.65;
+      }
+      .ptag {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--pr);
+        background: var(--pr-ul);
+        padding: 3px 11px;
+        border-radius: 60px;
+        display: inline-block;
+      }
+
+      /* ── HOW IT WORKS ────────────────────────── */
+      .stg {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 28px;
+        position: relative;
+      }
+      .stg::before {
+        content: "";
+        position: absolute;
+        top: 30px;
+        inset-inline-start: 14%;
+        inset-inline-end: 14%;
+        height: 2px;
         background: linear-gradient(
-          135deg,
-          var(--primary-blue),
-          var(--primary-green)
+          90deg,
+          var(--pr-ul),
+          var(--pr-l),
+          var(--pr-ul)
         );
-        width: 52px;
-        height: 52px;
-        border-radius: 30px;
+        z-index: 0;
+      }
+      @media (max-width: 700px) {
+        .stg::before {
+          display: none;
+        }
+      }
+      .sb {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .sn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--pr);
+        color: #fff;
+        font-size: 1.3rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 14px;
+        box-shadow: 0 7px 20px rgba(27, 107, 117, 0.28);
+      }
+      .sb h3 {
+        font-size: 0.93rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 6px;
+      }
+      .sb p {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* ── NURSES ──────────────────────────────── */
+      .ng {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+      }
+      .nc {
+        background: #fff;
+        border-radius: var(--r-md);
+        padding: 26px 22px;
+        border: 1px solid var(--bd);
+        text-align: center;
+        transition: 0.28s;
+      }
+      .nc:hover {
+        box-shadow: var(--sh-md);
+        transform: translateY(-4px);
+      }
+      .nav-img {
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        border: 4px solid var(--pr-ul);
+        margin-bottom: 12px;
+        object-fit: cover;
+      }
+      .n-name {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 4px;
+      }
+      .n-spec {
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--pr);
+        background: var(--pr-ul);
+        padding: 3px 11px;
+        border-radius: 60px;
+        display: inline-block;
+        margin-bottom: 8px;
+      }
+      .n-stars {
+        color: #f59e0b;
+        font-size: 0.82rem;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+      }
+      .n-exp {
+        font-size: 0.76rem;
+        color: var(--muted);
+        margin-bottom: 3px;
+      }
+      .n-lic {
+        font-size: 0.72rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+      .n-lic i {
+        color: var(--gr);
+      }
+
+      /* ── TESTIMONIALS ────────────────────────── */
+      .swiper {
+        overflow: hidden;
+        padding-bottom: 40px !important;
+      }
+      .swiper-slide {
+        height: auto !important;
+      }
+      .tc {
+        background: #fff;
+        border: 1px solid var(--bd);
+        border-radius: var(--r-md);
+        padding: 26px;
+        height: 100%;
+      }
+      .tq {
+        font-size: 0.9rem;
+        color: var(--text);
+        line-height: 1.75;
+        margin-bottom: 18px;
+        font-style: italic;
+      }
+      .ta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .tav {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--pr-ul);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: var(--pr);
+        flex-shrink: 0;
+      }
+      .tn {
+        font-weight: 700;
+        font-size: 0.87rem;
+        color: var(--dark);
+      }
+      .tl {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      .swiper-pagination-bullet-active {
+        background: var(--pr) !important;
+      }
+
+      /* ── DISCLAIMER ──────────────────────────── */
+      .disc {
+        background: #fff8f0;
+        border: 1.5px solid #f0c4a0;
+        border-radius: var(--r-md);
+        padding: 26px 28px;
+      }
+      .disc h3 {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #c05a20;
+        margin-bottom: 11px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .disc p {
+        font-size: 0.82rem;
+        color: #7a4020;
+        line-height: 1.75;
+      }
+      .disc ul {
+        list-style: none;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .disc li {
+        font-size: 0.82rem;
+        color: #7a4020;
+        display: flex;
+        align-items: flex-start;
+        gap: 7px;
+      }
+      .disc li::before {
+        content: "•";
+        color: var(--ac);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* ── CERTS ───────────────────────────────── */
+      .cg {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 13px;
+      }
+      .ci {
+        background: #fff;
+        border: 1.5px solid var(--bd);
+        border-radius: var(--r-sm);
+        padding: 13px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--dark);
+      }
+      .ci i {
+        font-size: 22px;
+        color: var(--pr);
+      }
+      .ci small {
+        display: block;
+        font-size: 0.68rem;
+        color: var(--muted);
+        font-weight: 400;
+      }
+
+      /* ── FAQ ─────────────────────────────────── */
+      .faq {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 700px;
+        margin-inline: auto;
+      }
+      .fi {
+        background: #fff;
+        border: 1px solid var(--bd);
+        border-radius: var(--r-sm);
+        overflow: hidden;
+      }
+      .fq {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 18px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--dark);
+        gap: 12px;
+        user-select: none;
+      }
+      .fq i {
+        color: var(--pr);
+        transition: 0.25s;
+        flex-shrink: 0;
+      }
+      .fi.open .fq i {
+        transform: rotate(180deg);
+      }
+      .fa {
+        display: none;
+        padding: 0 18px 16px;
+        font-size: 0.83rem;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      .fi.open .fa {
+        display: block;
+      }
+
+      /* ── FOOTER ──────────────────────────────── */
+      footer {
+        background: var(--dark);
+        color: #b0c4cc;
+        padding: 56px 0 0;
+        margin-top: 72px;
+      }
+      .fg-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1.5fr;
+        gap: 44px;
+        margin-bottom: 44px;
+      }
+      @media (max-width: 860px) {
+        .fg-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 28px;
+        }
+      }
+      @media (max-width: 520px) {
+        .fg-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .fb .logo {
+        color: #fff;
+        margin-bottom: 14px;
+        display: inline-flex;
+      }
+      .fb p {
+        font-size: 0.82rem;
+        line-height: 1.75;
+        max-width: 270px;
+      }
+      .fc-col h4 {
+        color: #fff;
+        font-size: 0.87rem;
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+      .fc-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .fc-col ul li a {
+        color: #b0c4cc;
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: 0.15s;
+      }
+      .fc-col ul li a:hover {
+        color: #fff;
+      }
+      .fc-col ul li {
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .f-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 18px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 0.75rem;
+      }
+      .f-legal {
+        display: flex;
+        gap: 14px;
+      }
+      .f-legal a {
+        color: #7a9099;
+        text-decoration: none;
+      }
+      .f-legal a:hover {
+        color: #fff;
+      }
+      .moph-b {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 60px;
+        padding: 7px 14px;
+        font-size: 0.73rem;
+        font-weight: 700;
+        color: #a8e6ec;
+        margin-top: 13px;
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 44px;
+        align-items: center;
+      }
+      @media (max-width: 760px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+      }
+
+      /* ── FLOATING BUTTONS ────────────────────── */
+      /* WhatsApp always bottom-right */
+      .f-wa {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: #25d366;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: var(--shadow-lg);
-        color: white;
-        font-size: 1.5rem;
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.42);
+        z-index: 400;
+        border: none;
+        transition: 0.2s;
       }
-      .chat-window-ui {
-        position: absolute;
-        bottom: 65px;
-        right: 0;
-        width: 280px;
-        background: white;
-        border-radius: 1.2rem;
-        box-shadow: var(--shadow-lg);
+      .f-wa:hover {
+        transform: scale(1.1);
+      }
+      /* Chat always bottom-left */
+      .f-chat {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: var(--pr);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(27, 107, 117, 0.38);
+        z-index: 400;
+        border: none;
+        transition: 0.2s;
+      }
+      .f-chat:hover {
+        transform: scale(1.1);
+      }
+
+      /* ── CHAT WINDOW ─────────────────────────── */
+      /* chat anchors to chat button (left side) */
+      .chat-win {
+        position: fixed;
+        bottom: 90px;
+        left: 24px;
+        width: 310px;
+        background: #fff;
+        border-radius: var(--r-md);
+        border: 1px solid var(--bd);
+        box-shadow: var(--sh-lg);
+        z-index: 401;
         display: none;
         flex-direction: column;
         overflow: hidden;
       }
+      .chat-win.open {
+        display: flex;
+      }
+      .ch {
+        background: var(--pr);
+        padding: 13px 16px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ch-l {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .ch-av {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+      }
+      .ch-n {
+        font-weight: 700;
+        font-size: 0.87rem;
+      }
+      .ch-s {
+        font-size: 0.7rem;
+        opacity: 0.8;
+      }
+      .ch-close {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 17px;
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      .cms {
+        height: 210px;
+        overflow-y: auto;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .cm {
+        max-width: 85%;
+        padding: 9px 13px;
+        border-radius: 14px;
+        font-size: 0.79rem;
+        line-height: 1.55;
+      }
+      .cm.bot {
+        background: var(--bg);
+        color: var(--text);
+        align-self: flex-start;
+        border-end-start-radius: 3px;
+      }
+      .cm.user {
+        background: var(--pr);
+        color: #fff;
+        align-self: flex-end;
+        border-end-end-radius: 3px;
+      }
+      .cin-row {
+        display: flex;
+        border-top: 1px solid var(--bd);
+      }
+      .cin-row input {
+        flex: 1;
+        border: none;
+        padding: 11px 14px;
+        font-family: inherit;
+        font-size: 0.83rem;
+        outline: none;
+      }
+      .cin-send {
+        background: var(--pr);
+        border: none;
+        color: #fff;
+        padding: 0 16px;
+        cursor: pointer;
+        font-size: 15px;
+      }
 
-      .fade-up {
-        opacity: 0;
-        transform: translateY(20px);
-        transition:
-          opacity 0.6s ease,
-          transform 0.6s ease;
+      /* ── SETUP MODAL ─────────────────────────── */
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 32, 39, 0.6);
+        z-index: 800;
+        display: none;
+        place-items: center;
+        padding: 20px;
       }
-      .fade-up.visible {
-        opacity: 1;
-        transform: translateY(0);
+      .modal-bg.open {
+        display: grid;
       }
-
-      /* Desktop breakpoints */
-      @media (min-width: 640px) {
-        .testimonial-card {
-          min-width: 320px;
-        }
-        .hero-section {
-          padding-top: 8rem;
-        }
-        h1 {
-          font-size: 2.6rem;
-        }
+      .modal {
+        background: #fff;
+        border-radius: var(--r-md);
+        padding: 28px;
+        max-width: 520px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
       }
-      @media (min-width: 768px) {
-        .container {
-          padding: 0 2rem;
-        }
-        h1 {
-          font-size: 3.2rem;
-        }
-        .hero-sub {
-          font-size: 1.1rem;
-        }
-        .button-group {
-          flex-direction: row;
-          justify-content: center;
-        }
-        .btn-primary,
-        .btn-outline {
-          width: auto;
-          min-width: 180px;
-        }
-        .sticky-cta {
-          display: none;
-        }
-        .cards-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1.5rem;
-        }
-        .nav-links {
-          display: flex;
-        }
-        .hamburger {
-          display: none;
-        }
-        .chatbot-float {
-          bottom: 1.5rem;
-        }
-        section {
-          padding: 4rem 0;
-        }
+      .modal h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 14px;
       }
-      @media (min-width: 1024px) {
-        .cards-grid {
-          grid-template-columns: repeat(4, 1fr);
-        }
-        .nurse-card img {
-          height: 200px;
-        }
-        .hero-section {
-          min-height: 90vh;
-        }
+      .modal pre {
+        background: var(--bg);
+        border: 1px solid var(--bd);
+        border-radius: var(--r-sm);
+        padding: 14px;
+        font-size: 0.72rem;
+        overflow-x: auto;
+        margin: 10px 0;
+        line-height: 1.7;
+        color: var(--text);
       }
-      @media (min-width: 1280px) {
-        .hero-section {
-          min-height: 100vh;
-        }
+      .modal ol {
+        padding-inline-start: 18px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.9;
       }
-      footer {
-        background: #f8fafe;
-        padding: 1.5rem;
-        text-align: center;
-        font-size: 0.8rem;
+      .modal ol li b {
+        color: var(--dark);
+      }
+      .modal-close {
+        float: inline-end;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--muted);
       }
     </style>
   </head>
   <body>
-    <header class="glass-header">
-      <div class="nav-container">
-        <div class="logo">Al MHD Nursing</div>
-        <div class="hamburger" id="hamburgerBtn">
-          <i class="fas fa-bars"></i>
-        </div>
-        <div class="nav-links">
-          <a href="#" data-en="Home" data-ar="الرئيسية">Home</a>
-          <a href="#booking" data-en="Book" data-ar="احجز">Book</a>
-          <a href="#services" data-en="Services" data-ar="خدمات">Services</a>
-          <a href="#contact" data-en="Contact" data-ar="اتصل">Contact</a>
-          <button id="desktopLangToggle" class="lang-toggle-btn">
-            🌐 العربية
+    <!-- EMERGENCY BAR -->
+    <div class="ebar">
+      <i class="fas fa-phone-alt"></i>
+      <span id="ebarText"
+        >طوارئ ٢٤/٧: <a href="tel:+97444112233">+974 4411 2233</a> &nbsp;|&nbsp;
+        مرخص من <strong>وزارة الصحة MOPH</strong> — #QH-2024-1847</span
+      >
+    </div>
+
+    <!-- HEADER -->
+    <header class="hdr">
+      <div class="container hdr-inner">
+        <!-- right side: logo -->
+        <a href="#" class="logo">
+          <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+          CareQatar
+        </a>
+        <!-- center: nav (desktop) -->
+        <nav class="hdr-nav">
+          <a href="#pricing" data-k="navP">الأسعار</a>
+          <a href="#services" data-k="navS">الخدمات</a>
+          <a href="#nurses" data-k="navN">الممرضون</a>
+          <a href="#faq" data-k="navF">الأسئلة الشائعة</a>
+        </nav>
+        <!-- left side: lang + hamburger -->
+        <div class="hdr-right">
+          <button class="lang-btn" id="langBtn">English</button>
+          <button class="ham" id="hamBtn" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
           </button>
         </div>
       </div>
     </header>
 
-    <div class="mobile-menu" id="mobileMenu">
-      <div class="close-menu" id="closeMenuBtn">
-        <i class="fas fa-times"></i>
-      </div>
-      <a href="#" data-en="Home" data-ar="الرئيسية">Home</a>
-      <a href="#booking" data-en="Book" data-ar="احجز">Book</a>
-      <a href="#services" data-en="Services" data-ar="خدمات">Services</a>
-      <a href="#contact" data-en="Contact" data-ar="اتصل">Contact</a>
-      <button id="mobileLangToggle" class="lang-toggle-btn">🌐 العربية</button>
-    </div>
-    <div class="overlay" id="overlay"></div>
-
-    <section class="hero-section">
-      <div class="hero-bg"></div>
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <div class="trust-badge">
-          <i class="fas fa-star-of-life"></i>
-          <span
-            data-en="Trusted Healthcare in Qatar"
-            data-ar="رعاية صحية موثوقة في قطر"
-            >Trusted Healthcare in Qatar</span
-          >
-        </div>
-        <h1>
-          <span
-            data-en="Professional Nursing Care"
-            data-ar="رعاية تمريضية احترافية"
-            >Professional Nursing Care</span
-          ><br /><span
-            class="gradient-text"
-            data-en="At Home — In Minutes"
-            data-ar="في المنزل — خلال دقائق"
-            >At Home — In Minutes</span
-          >
-        </h1>
-        <p
-          class="hero-sub"
-          data-en="Compassionate, licensed nurses delivered to your doorstep. Premium home healthcare in Doha."
-          data-ar="ممرضات مرخصات وذوات خبرة إلى عتبة داركم. رعاية صحية منزلية فاخرة في الدوحة."
+    <!-- MOBILE DRAWER -->
+    <div class="drawer-bg" id="drawerBg">
+      <div class="drawer" id="drawer">
+        <button class="drawer-close" id="drawerClose">
+          <i class="fas fa-times"></i>
+        </button>
+        <a href="#pricing" onclick="closeDrawer()" data-k="navP"
+          ><i class="fas fa-tag"></i>الأسعار</a
         >
-          Compassionate, licensed nurses delivered to your doorstep. Premium
-          home healthcare in Doha.
-        </p>
-        <div class="button-group">
-          <button class="btn-primary" id="heroBookScroll">
-            <i class="fas fa-calendar-check"></i>
-            <span data-en="Book Now" data-ar="احجز الآن">Book Now</span>
-          </button>
-          <button class="btn-outline" id="heroWhatsapp">
-            <i class="fab fa-whatsapp"></i>
-            <span data-en="WhatsApp" data-ar="واتساب">WhatsApp</span>
-          </button>
-        </div>
-        <div class="trust-icons">
-          <div class="trust-item">
-            <i class="fas fa-user-md"></i>
-            <span data-en="Licensed Nurses" data-ar="ممرضات مرخصات"
-              >Licensed Nurses</span
-            >
-          </div>
-          <div class="trust-item">
-            <i class="fas fa-headset"></i>
-            <span data-en="24/7 Support" data-ar="دعم 24/7">24/7 Support</span>
-          </div>
-          <div class="trust-item">
-            <i class="fas fa-bolt"></i>
-            <span data-en="Fast Response" data-ar="استجابة سريعة"
-              >Fast Response</span
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="booking" style="background: var(--bg-light)">
-      <div class="container">
-        <h2
-          style="font-size: 1.8rem; text-align: center"
-          data-en="Book Smart in Minutes"
-          data-ar="احجز بذكاء في دقائق"
+        <a href="#services" onclick="closeDrawer()" data-k="navS"
+          ><i class="fas fa-hand-holding-heart"></i>الخدمات</a
         >
-          Book Smart in Minutes
-        </h2>
-        <div id="smartBookingWidget">
-          <div class="step-indicator" id="stepIndicatorWrapper"></div>
-          <div id="stepDynamicContent" class="booking-card-form"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="services">
-      <div class="container">
-        <h2
-          style="font-size: 1.8rem; margin-bottom: 1.5rem"
-          data-en="Premium Home Services"
-          data-ar="خدمات منزلية فاخرة"
+        <a href="#nurses" onclick="closeDrawer()" data-k="navN"
+          ><i class="fas fa-user-nurse"></i>الممرضون</a
         >
-          Premium Home Services
-        </h2>
-        <div class="cards-grid">
-          <div class="service-card fade-up">
-            <i
-              class="fas fa-heart"
-              style="font-size: 1.8rem; color: var(--primary-green)"
-            ></i>
-            <h3
-              style="margin: 0.8rem 0 0.3rem"
-              data-en="Elderly Care"
-              data-ar="رعاية المسنين"
-            >
-              Elderly Care
-            </h3>
-            <p data-en="24/7 compassionate support" data-ar="دعم ورعاية 24/7">
-              24/7 compassionate support
-            </p>
-          </div>
-          <div class="service-card fade-up">
-            <i class="fas fa-baby-carriage" style="font-size: 1.8rem"></i>
-            <h3 data-en="Postnatal Care" data-ar="رعاية ما بعد الولادة">
-              Postnatal Care
-            </h3>
-            <p data-en="Newborn & mother wellbeing" data-ar="رعاية الأم والطفل">
-              Newborn & mother wellbeing
-            </p>
-          </div>
-          <div class="service-card fade-up">
-            <i class="fas fa-lungs"></i>
-            <h3 data-en="Chronic Care" data-ar="الرعاية المزمنة">
-              Chronic Care
-            </h3>
-            <p data-en="Diabetes, respiratory" data-ar="السكري والجهاز التنفسي">
-              Diabetes, respiratory
-            </p>
-          </div>
-          <div class="service-card fade-up">
-            <i class="fas fa-syringe"></i>
-            <h3 data-en="Post-OP Nursing" data-ar="تمريض ما بعد الجراحة">
-              Post-OP Nursing
-            </h3>
-            <p data-en="Recover safely at home" data-ar="تعافٍ آمن">
-              Recover safely at home
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section style="background: var(--bg-light)">
-      <div class="container">
-        <h2
-          style="text-align: center; font-size: 1.8rem"
-          data-en="How It Works"
-          data-ar="كيف يعمل"
+        <a href="#faq" onclick="closeDrawer()" data-k="navF"
+          ><i class="fas fa-question-circle"></i>الأسئلة الشائعة</a
         >
-          How It Works
-        </h2>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
+        <hr />
+        <a href="tel:+97444112233"
+          ><i class="fas fa-phone-alt" style="color: var(--pr)"></i>+974 4411
+          2233</a
+        >
+        <a href="https://wa.me/97451234567" target="_blank"
+          ><i class="fab fa-whatsapp" style="color: #25d366"></i>WhatsApp</a
+        >
+        <hr />
+        <a
+          href="#"
+          onclick="
+            showSetup();
+            closeDrawer();
           "
+          ><i class="fas fa-cog" style="color: var(--muted)"></i
+          ><span data-k="setupLink">إعداد Google Sheets</span></a
         >
-          <div style="text-align: center; flex: 1">
-            <i
-              class="fas fa-calendar-alt"
-              style="
-                font-size: 1.6rem;
-                background: var(--light-blue);
-                padding: 0.8rem;
-                border-radius: 2rem;
-              "
-            ></i>
-            <p>
-              <strong>1</strong> <span data-en="Book" data-ar="احجز">Book</span>
-            </p>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-wrap container">
+        <!-- Copy -->
+        <div class="hero-copy">
+          <div class="lic-tag">
+            <i class="fas fa-shield-check"></i
+            ><span data-k="licTag"
+              >مرخص من وزارة الصحة MOPH • #QH-2024-1847</span
+            >
           </div>
-          <div style="text-align: center; flex: 1">
-            <i
-              class="fas fa-handshake"
-              style="
-                font-size: 1.6rem;
-                background: var(--light-green);
-                padding: 0.8rem;
-                border-radius: 2rem;
-              "
-            ></i>
-            <p>
-              <strong>2</strong>
-              <span data-en="Match" data-ar="تطابق">Match</span>
-            </p>
-          </div>
-          <div style="text-align: center; flex: 1">
-            <i
-              class="fas fa-home"
-              style="
-                font-size: 1.6rem;
-                background: var(--light-blue);
-                padding: 0.8rem;
-                border-radius: 2rem;
-              "
-            ></i>
-            <p>
-              <strong>3</strong>
-              <span data-en="Care" data-ar="رعاية">Care</span>
-            </p>
+          <h1 data-k="heroH">
+            رعاية تمريض منزلية <span>احترافية</span> في قطر
+          </h1>
+          <p data-k="heroP">
+            ممرضون معتمدون يصلون إلى منزلك في غضون ساعات. موثوق من أكثر من ١٢٠٠
+            عائلة في جميع أنحاء قطر.
+          </p>
+          <div class="hero-stats">
+            <div class="hs">
+              <span class="n">١٢٠٠+</span
+              ><span class="l" data-k="st1">مريض تم علاجه</span>
+            </div>
+            <div class="hs">
+              <span class="n">4.9★</span
+              ><span class="l" data-k="st2">متوسط التقييم</span>
+            </div>
+            <div class="hs">
+              <span class="n">24/7</span
+              ><span class="l" data-k="st3">الإتاحة</span>
+            </div>
+            <div class="hs">
+              <span class="n">&lt;2h</span
+              ><span class="l" data-k="st4">وقت الاستجابة</span>
+            </div>
           </div>
         </div>
-        <h3 data-en="Our Trusted Nurses" data-ar="ممرضات موثوقات">
-          Our Trusted Nurses
-        </h3>
-        <div class="cards-grid" style="margin-top: 1rem">
-          <div class="nurse-card fade-up">
-            <img
-              src="https://placehold.co/400x220/E3F2FD/1E88E5?text=Fatima"
-              style="width: 100%"
-            />
-            <div style="padding: 1rem">
-              <h4>Fatima A.</h4>
-              <p data-en="12 years · Elderly" data-ar="12 عام · مسنين">
-                12 years · Elderly
-              </p>
-              <span>⭐⭐⭐⭐⭐ 4.9</span>
+
+        <!-- BOOKING CARD -->
+        <div class="hero-form-col" id="bookingSection">
+          <div class="bc">
+            <!-- price preview -->
+            <div class="price-strip">
+              <div>
+                <div class="ps-from" data-k="pfrom">يبدأ من</div>
+                <div class="ps-val" id="livePrice">190 QAR/day</div>
+              </div>
+              <div class="ps-incl">
+                <div class="ps-from" data-k="pincl">يشمل</div>
+                <div
+                  style="font-size: 0.76rem; font-weight: 700; color: var(--pr)"
+                  data-k="pinclD"
+                >
+                  الممرضة + المعدات
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="nurse-card fade-up">
-            <img
-              src="https://placehold.co/400x220/E8F5E9/43A047?text=Ahmed"
-              style="width: 100%"
-            />
-            <div style="padding: 1rem">
-              <h4>Ahmed M.</h4>
-              <p data-en="ICU Certified" data-ar="معتمد عناية مركزة">
-                ICU Certified
-              </p>
-              <span>⭐⭐⭐⭐⭐ 5.0</span>
+
+            <!-- progress -->
+            <div class="prog-wrap">
+              <div class="prog-top">
+                <span class="prog-lbl" id="stepLbl">الخطوة ١ من ٥</span>
+                <span class="prog-pct" id="stepPct">20%</span>
+              </div>
+              <div class="prog-bar">
+                <div class="pb active" id="pb1"></div>
+                <div class="pb" id="pb2"></div>
+                <div class="pb" id="pb3"></div>
+                <div class="pb" id="pb4"></div>
+                <div class="pb" id="pb5"></div>
+              </div>
             </div>
-          </div>
-          <div class="nurse-card fade-up">
-            <img
-              src="https://placehold.co/400x220/FFF3E0/FFB74D?text=Samira"
-              style="width: 100%"
-            />
-            <div style="padding: 1rem">
-              <h4>Samira K.</h4>
-              <p data-en="Postnatal Expert" data-ar="خبيرة ما بعد الولادة">
-                Postnatal Expert
+
+            <!-- FORM -->
+            <form id="bForm" novalidate>
+              <!-- Step 1 -->
+              <div class="qstep active" id="s1" data-step="1">
+                <div class="q-title" data-k="q1">
+                  ١ — ما الذي يصف حالة المريض بشكل أفضل؟
+                </div>
+                <div class="q-grid">
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="elderly"
+                    data-price="190 QAR/day"
+                    onclick="pick(this, 'cond', 1)"
+                  >
+                    <i class="fas fa-user-friends"></i
+                    ><span data-k="o1">كبار السن / ضعف</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="mother"
+                    data-price="155 QAR/day"
+                    onclick="pick(this, 'cond', 1)"
+                  >
+                    <i class="fas fa-baby-carriage"></i
+                    ><span data-k="o2">أم ومولود</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="physio"
+                    data-price="200 QAR/session"
+                    onclick="pick(this, 'cond', 1)"
+                  >
+                    <i class="fas fa-walking"></i
+                    ><span data-k="o3">حركة / علاج طبيعي</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="surgery"
+                    data-price="190 QAR/day"
+                    onclick="pick(this, 'cond', 1)"
+                  >
+                    <i class="fas fa-band-aid"></i
+                    ><span data-k="o4">بعد الجراحة</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="qstep" id="s2" data-step="2">
+                <div class="q-title" data-k="q2">٢ — الفئة العمرية للمريض؟</div>
+                <div class="q-grid c3">
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="child"
+                    onclick="pick(this, 'age', 2)"
+                  >
+                    <i class="fas fa-child"></i><span>0 – 12</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="adult"
+                    onclick="pick(this, 'age', 2)"
+                  >
+                    <i class="fas fa-user"></i><span>18 – 60</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="senior"
+                    onclick="pick(this, 'age', 2)"
+                  >
+                    <i class="fas fa-user-clock"></i><span>60+</span>
+                  </button>
+                </div>
+                <div class="sa">
+                  <button
+                    type="button"
+                    class="btn btn-ol btn-sm"
+                    onclick="goTo(1)"
+                    data-k="back"
+                  >
+                    ← رجوع
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="qstep" id="s3" data-step="3">
+                <div class="q-title" data-k="q3">
+                  ٣ — كم من الوقت تحتاج للرعاية؟
+                </div>
+                <div class="q-grid c3">
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="days"
+                    data-price="190 QAR/day"
+                    onclick="pick(this, 'dur', 3)"
+                  >
+                    <i class="fas fa-calendar-day"></i
+                    ><span data-k="od1">١-٣ أيام</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="weeks"
+                    data-price="165 QAR/day"
+                    onclick="pick(this, 'dur', 3)"
+                  >
+                    <i class="fas fa-calendar-week"></i
+                    ><span data-k="od2">أسابيع</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="qo"
+                    data-v="long"
+                    data-price="140 QAR/day"
+                    onclick="pick(this, 'dur', 3)"
+                  >
+                    <i class="fas fa-calendar-alt"></i
+                    ><span data-k="od3">طويل الأمد</span>
+                  </button>
+                </div>
+                <div class="sa">
+                  <button
+                    type="button"
+                    class="btn btn-ol btn-sm"
+                    onclick="goTo(2)"
+                    data-k="back"
+                  >
+                    ← رجوع
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 4: Date & Time -->
+              <div class="qstep" id="s4" data-step="4">
+                <div class="q-title" data-k="q4">٤ — متى تحتاج الرعاية؟</div>
+                <div class="rec" id="recCard">
+                  <div class="rec-name" id="recName">رعاية المسنين</div>
+                  <div class="rec-p" data-k="rfrom">
+                    يبدأ من <strong id="recPr">190 QAR/day</strong>
+                  </div>
+                </div>
+                <div class="fg">
+                  <label for="cDate" data-k="ld">التاريخ المفضل</label>
+                  <input type="date" id="cDate" class="fc" required />
+                  <div class="ferr" id="eDate" data-k="ed">
+                    الرجاء اختيار تاريخ صحيح في المستقبل
+                  </div>
+                </div>
+                <div class="fg">
+                  <label for="cTime" data-k="lt">الوقت المفضل</label>
+                  <input type="time" id="cTime" class="fc" required />
+                  <div class="ferr" id="eTime" data-k="et">
+                    الرجاء اختيار الوقت
+                  </div>
+                </div>
+                <div class="sa">
+                  <button
+                    type="button"
+                    class="btn btn-ol btn-sm"
+                    onclick="goTo(3)"
+                    data-k="back"
+                  >
+                    ← رجوع
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-pr btn-sm"
+                    onclick="valDate()"
+                    data-k="next"
+                  >
+                    التالي →
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 5: Contact -->
+              <div class="qstep" id="s5" data-step="5">
+                <div class="q-title" data-k="q5">٥ — بيانات التواصل</div>
+                <div class="fg">
+                  <label for="pName" data-k="ln">اسم المريض</label>
+                  <input
+                    type="text"
+                    id="pName"
+                    class="fc"
+                    placeholder="الاسم الكامل"
+                    required
+                  />
+                  <div class="ferr" id="eName" data-k="en">
+                    الرجاء إدخال اسم المريض
+                  </div>
+                </div>
+                <div class="fg">
+                  <label for="pArea" data-k="la">المنطقة في قطر</label>
+                  <input
+                    type="text"
+                    id="pArea"
+                    class="fc"
+                    placeholder="مثال: الدوحة، الوكرة، الريان..."
+                    required
+                  />
+                  <div class="ferr" id="eArea" data-k="ea">
+                    الرجاء إدخال منطقتك
+                  </div>
+                </div>
+                <div class="fg">
+                  <label for="pPhone" data-k="lp">رقم الهاتف</label>
+                  <input
+                    type="tel"
+                    id="pPhone"
+                    class="fc"
+                    placeholder="+974 XXXX XXXX"
+                    required
+                  />
+                  <div class="ferr" id="ePhone" data-k="ep">
+                    رقم هاتف غير صحيح (٨-١٥ رقماً)
+                  </div>
+                </div>
+                <div class="pnote">
+                  <i class="fas fa-lock"></i>
+                  <span data-k="prv"
+                    >بياناتك محمية بموجب قانون PDPL القطري. لن نشارك معلوماتك مع
+                    أطراف ثالثة.</span
+                  >
+                </div>
+                <div class="sa">
+                  <button
+                    type="button"
+                    class="btn btn-ol btn-sm"
+                    onclick="goTo(4)"
+                    data-k="back"
+                  >
+                    ← رجوع
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-pr btn-sm"
+                    id="submitBtn"
+                  >
+                    <i class="fas fa-check-circle"></i
+                    ><span data-k="sub">إتمام الحجز</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <!-- Sending -->
+            <div
+              id="sending"
+              style="display: none; text-align: center; padding: 24px 0"
+            >
+              <i
+                class="fas fa-spinner fa-pulse"
+                style="font-size: 32px; color: var(--pr)"
+              ></i>
+              <p style="margin-top: 12px; color: var(--muted)" data-k="snd">
+                جارٍ إرسال حجزك...
               </p>
-              <span>⭐⭐⭐⭐⭐ 4.8</span>
+            </div>
+
+            <!-- Success -->
+            <div id="succScreen" style="display: none" class="succ">
+              <div class="succ-ic"><i class="fas fa-check"></i></div>
+              <h3 data-k="sOK">تم تأكيد الحجز!</h3>
+              <p data-k="sMsg">
+                استلمنا طلبك. سيتصل بك فريقنا خلال ٣٠ دقيقة للتأكيد وتخصيص
+                الممرضة المناسبة.
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 9px">
+                <button class="btn btn-wa" onclick="openWA()">
+                  <i class="fab fa-whatsapp"></i
+                  ><span data-k="wab">تواصل عبر واتساب</span>
+                </button>
+                <button class="btn btn-ol" onclick="resetForm()" data-k="nb">
+                  حجز جديد
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- TRUST STRIP -->
+    <div class="tstrip">
+      <div class="container">
+        <div class="tstrip-inner">
+          <div class="ti">
+            <i class="fas fa-shield-alt"></i>
+            <div>
+              <div class="tl" data-k="tL1">مرخص MOPH</div>
+              <div class="tv">#QH-2024-1847</div>
+            </div>
+          </div>
+          <div class="ti">
+            <i class="fas fa-star"></i>
+            <div>
+              <div class="tl" data-k="tL2">تقييم المرضى</div>
+              <div class="tv">4.9 / 5.0</div>
+            </div>
+          </div>
+          <div class="ti">
+            <i class="fas fa-user-nurse"></i>
+            <div>
+              <div class="tl" data-k="tL3">ممرض معتمد</div>
+              <div class="tv">48 نشطاً</div>
+            </div>
+          </div>
+          <div class="ti">
+            <i class="fas fa-clock"></i>
+            <div>
+              <div class="tl" data-k="tL4">متوسط الاستجابة</div>
+              <div class="tv">&lt;٢ ساعة</div>
+            </div>
+          </div>
+          <div class="ti">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <div class="tl" data-k="tL5">التغطية</div>
+              <div class="tv" data-k="tV5">جميع أنحاء قطر</div>
+            </div>
+          </div>
+          <div class="ti">
+            <i class="fas fa-lock"></i>
+            <div>
+              <div class="tl" data-k="tL6">حماية البيانات</div>
+              <div class="tv">PDPL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="container">
+        <div class="sh ctr">
+          <div class="sec-lbl" data-k="pLbl">أسعار شفافة</div>
+          <h2 class="sec-h" data-k="pH">أسعار واضحة بدون مفاجآت</h2>
+          <p class="sec-p" data-k="pSub">
+            جميع الأسعار تشمل ممرضاً معتمداً والمعدات الأساسية والتنقل داخل قطر.
+            شامل ضريبة القيمة المضافة.
+          </p>
+        </div>
+        <div class="pg">
+          <div class="pc">
+            <div class="p-ic"><i class="fas fa-calendar-day"></i></div>
+            <div class="p-name" data-k="pl1">رعاية يومية</div>
+            <div class="p-price">190<span data-k="pd"> ريال / يوم</span></div>
+            <ul class="p-feats">
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f11">زيارة ممرض معتمد (٨ ساعات)</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f12">معدات طبية أساسية</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f13">تقرير يومي للعائلة</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f14">خط دعم ٢٤/٧</span>
+              </li>
+            </ul>
+            <button
+              class="btn btn-ol"
+              onclick="scrollToForm()"
+              style="width: 100%"
+              data-k="cp"
+            >
+              اختر الخطة
+            </button>
+          </div>
+          <div class="pc feat">
+            <div class="feat-b" data-k="pop">الأكثر طلباً</div>
+            <div class="p-ic" style="background: #fff4ef; color: var(--ac)">
+              <i class="fas fa-calendar-week"></i>
+            </div>
+            <div class="p-name" data-k="pl2">رعاية أسبوعية</div>
+            <div class="p-price">165<span data-k="pd"> ريال / يوم</span></div>
+            <ul class="p-feats">
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f21">كل ما في الرعاية اليومية</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f22">أولوية في تعيين الممرض</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f23">استشارة طبية (مرة/أسبوع)</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f24">منسق رعاية مخصص</span>
+              </li>
+            </ul>
+            <button
+              class="btn btn-pr"
+              onclick="scrollToForm()"
+              style="width: 100%"
+              data-k="cp"
+            >
+              اختر الخطة
+            </button>
+          </div>
+          <div class="pc">
+            <div class="p-ic" style="background: var(--gr-l); color: var(--gr)">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="p-name" data-k="pl3">رعاية شهرية</div>
+            <div class="p-price">140<span data-k="pd"> ريال / يوم</span></div>
+            <ul class="p-feats">
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f31">كل ما في الرعاية الأسبوعية</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f32">نفس الممرض في كل زيارة</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f33">تقرير صحي شهري</span>
+              </li>
+              <li>
+                <i class="fas fa-check"></i
+                ><span data-k="f34">جلسة تدريب للعائلة</span>
+              </li>
+            </ul>
+            <button
+              class="btn btn-ol"
+              onclick="scrollToForm()"
+              style="width: 100%"
+              data-k="cp"
+            >
+              اختر الخطة
+            </button>
+          </div>
+        </div>
+        <p
+          style="
+            text-align: center;
+            font-size: 0.76rem;
+            color: var(--muted);
+            margin-top: 16px;
+          "
+          data-k="pNote"
+        >
+          <i class="fas fa-info-circle"></i> جلسات العلاج الطبيعي بأسعار منفصلة.
+          تواصل معنا لباقات العناية المركزة.
+        </p>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="bg2">
+      <div class="container">
+        <div class="sh">
+          <div class="sec-lbl" data-k="sLbl">ما نقدمه</div>
+          <h2 class="sec-h" data-k="sH">خدمات الرعاية المنزلية المتخصصة</h2>
+          <p class="sec-p" data-k="sSub">
+            كل خدمة تقدمها ممرضات مدربات تحديداً في هذا المجال.
+          </p>
+        </div>
+        <div class="sg">
+          <article class="svc" onclick="scrollToForm()">
+            <div class="svc-ic ic-t">
+              <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <h3 data-k="sv1N">رعاية المسنين</h3>
+            <p data-k="sv1D">
+              مساعدة في الحياة اليومية وإدارة الأدوية والمرافقة ودعم الحركة
+              للمرضى كبار السن.
+            </p>
+            <span class="ptag">من ١٤٠ ريال/يوم</span>
+          </article>
+          <article class="svc" onclick="scrollToForm()">
+            <div class="svc-ic ic-g"><i class="fas fa-baby-carriage"></i></div>
+            <h3 data-k="sv2N">رعاية الأم والطفل</h3>
+            <p data-k="sv2D">
+              رعاية ما بعد الولادة ودعم الرضاعة ومتابعة حديثي الولادة خلال
+              الأسابيع الأولى الحرجة.
+            </p>
+            <span class="ptag">من ١٥٥ ريال/يوم</span>
+          </article>
+          <article class="svc" onclick="scrollToForm()">
+            <div class="svc-ic ic-o"><i class="fas fa-walking"></i></div>
+            <h3 data-k="sv3N">العلاج الطبيعي المنزلي</h3>
+            <p data-k="sv3D">
+              جلسات تعافٍ وتمارين حركية وإعادة تأهيل بواسطة معالجين طبيعيين
+              مرخصين.
+            </p>
+            <span class="ptag">من ٢٠٠ ريال/جلسة</span>
+          </article>
+          <article class="svc" onclick="scrollToForm()">
+            <div class="svc-ic ic-b"><i class="fas fa-band-aid"></i></div>
+            <h3 data-k="sv4N">رعاية ما بعد الجراحة</h3>
+            <p data-k="sv4D">
+              تضميد الجروح وإدارة المصارف ومراقبة العلامات الحيوية ودعم إعادة
+              التأهيل.
+            </p>
+            <span class="ptag">من ١٩٠ ريال/يوم</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
     <section>
       <div class="container">
-        <h2 data-en="Families Trust Us" data-ar="العائلات تثق بنا">
-          Families Trust Us
-        </h2>
-        <div class="testimonial-scroll">
-          <div class="testimonial-card">
-            <i class="fas fa-quote-left"></i>
-            <p>"Professional and caring, highly recommend!"</p>
-            <strong>- Doha Family</strong> ⭐⭐⭐⭐⭐
+        <div class="sh ctr">
+          <div class="sec-lbl" data-k="hwLbl">عملية بسيطة</div>
+          <h2 class="sec-h" data-k="hwH">كيف نعمل</h2>
+        </div>
+        <div class="stg">
+          <div class="sb">
+            <div class="sn">١</div>
+            <h3 data-k="hw1H">اختر واحجز</h3>
+            <p data-k="hw1P">أجب على ٥ أسئلة سريعة واحجز في أقل من ٣ دقائق.</p>
           </div>
-          <div class="testimonial-card">
-            <i class="fas fa-quote-left"></i>
-            <p>"Booking was seamless, nurse arrived within an hour."</p>
-            <strong>- Sara</strong> ⭐⭐⭐⭐⭐
+          <div class="sb">
+            <div class="sn">٢</div>
+            <h3 data-k="hw2H">نؤكد لك</h3>
+            <p data-k="hw2P">يتصل بك فريقنا خلال ٣٠ دقيقة لتأكيد الحجز.</p>
           </div>
-          <div class="testimonial-card">
-            <i class="fas fa-quote-left"></i>
-            <p>"Peace of mind. Truly premium service."</p>
-            <strong>- Al Thani</strong> ⭐⭐⭐⭐⭐
+          <div class="sb">
+            <div class="sn">٣</div>
+            <h3 data-k="hw3H">الممرض يصل</h3>
+            <p data-k="hw3P">
+              يصل ممرضك المعتمد في الوقت المحدد مع جميع المعدات.
+            </p>
+          </div>
+          <div class="sb">
+            <div class="sn">٤</div>
+            <h3 data-k="hw4H">رعاية مستمرة</h3>
+            <p data-k="hw4P">
+              تقارير يومية ترسل للعائلة. يمكن تعديل الخطة في أي وقت.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <section style="background: var(--bg-light)">
+    <!-- NURSES -->
+    <section id="nurses" class="bg2">
       <div class="container">
-        <h2 data-en="FAQs" data-ar="الأسئلة الشائعة">FAQs</h2>
-        <div class="faq-list">
-          <div class="faq-item">
-            <div class="faq-question">
-              <span
-                data-en="How fast can a nurse arrive?"
-                data-ar="ما سرعة وصول الممرضة؟"
-                >How fast can a nurse arrive?</span
-              ><i class="fas fa-chevron-down"></i>
+        <div class="sh">
+          <div class="sec-lbl" data-k="nLbl">فريقنا</div>
+          <h2 class="sec-h" data-k="nH">تعرف على ممرضينا المعتمدين</h2>
+          <p class="sec-p" data-k="nSub">
+            جميع الممرضين يحملون ترخيصاً سارياً من مجلس الصحة القطري QHC ويخضعون
+            للتدريب السنوي.
+          </p>
+        </div>
+        <div class="ng">
+          <article class="nc">
+            <img
+              class="nav-img"
+              src="https://ui-avatars.com/api/?name=Fatima+Al-Mansoori&background=e8f7f9&color=1b6b75&size=180&bold=true&font-size=0.38"
+              alt="Fatima Al-Mansoori"
+              width="86"
+              height="86"
+            />
+            <div class="n-name">Fatima Al-Mansoori</div>
+            <div class="n-spec" data-k="sp1">رعاية المسنين</div>
+            <div class="n-stars">★★★★★</div>
+            <div class="n-exp" data-k="nx1">٨ سنوات خبرة</div>
+            <div class="n-exp">BSc Nursing — University of Qatar</div>
+            <div class="n-lic">
+              <i class="fas fa-certificate"></i> QHC #N-8821
             </div>
-            <div class="faq-answer">
-              <span
-                data-en="Within 60 minutes across Doha, 24/7."
-                data-ar="خلال 60 دقيقة في جميع أنحاء الدوحة."
-                >Within 60 minutes across Doha, 24/7.</span
-              >
+          </article>
+          <article class="nc">
+            <img
+              class="nav-img"
+              src="https://ui-avatars.com/api/?name=Ahmed+Nasser&background=eaf7ef&color=27ae60&size=180&bold=true&font-size=0.38"
+              alt="Ahmed Nasser"
+              width="86"
+              height="86"
+            />
+            <div class="n-name">Ahmed Nasser</div>
+            <div class="n-spec" data-k="sp2">العلاج الطبيعي</div>
+            <div class="n-stars">★★★★★</div>
+            <div class="n-exp" data-k="nx2">٦ سنوات خبرة</div>
+            <div class="n-exp">MSc Physical Therapy — HMC</div>
+            <div class="n-lic">
+              <i class="fas fa-certificate"></i> QHC #N-7745
+            </div>
+          </article>
+          <article class="nc">
+            <img
+              class="nav-img"
+              src="https://ui-avatars.com/api/?name=Layla+Hassan&background=fff4ef&color=e8734a&size=180&bold=true&font-size=0.38"
+              alt="Layla Hassan"
+              width="86"
+              height="86"
+            />
+            <div class="n-name">Layla Hassan</div>
+            <div class="n-spec" data-k="sp3">رعاية الأم والطفل</div>
+            <div class="n-stars">★★★★★</div>
+            <div class="n-exp" data-k="nx3">١٠ سنوات خبرة</div>
+            <div class="n-exp">BSc Midwifery — Weill Cornell</div>
+            <div class="n-lic">
+              <i class="fas fa-certificate"></i> QHC #N-5532
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section>
+      <div class="container">
+        <div class="sh ctr">
+          <div class="sec-lbl" data-k="tLbl">قصص المرضى</div>
+          <h2 class="sec-h" data-k="tH">العائلات تثق بـ CareQatar</h2>
+        </div>
+        <div class="swiper testiS">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="tc">
+                <div class="n-stars" style="margin-bottom: 10px">★★★★★</div>
+                <p class="tq" data-k="t1">
+                  «فاطمة كانت احترافية وحانية بشكل لا يصدق. تحسن والدي بشكل أسرع
+                  بكثير مما كنا نتوقع. الممرضة كانت تتواصل معنا يومياً.»
+                </p>
+                <div class="ta">
+                  <div class="tav">MA</div>
+                  <div>
+                    <div class="tn">محمد الثاني</div>
+                    <div class="tl">ويست باي، الدوحة</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="tc">
+                <div class="n-stars" style="margin-bottom: 10px">★★★★★</div>
+                <p class="tq" data-k="t2">
+                  «بعد عمليتي كنت قلقة من التعافي في المنزل. CareQatar جعل الأمر
+                  سهلاً. الممرضة كانت متاحة على واتساب في أي وقت.»
+                </p>
+                <div class="ta">
+                  <div class="tav">SK</div>
+                  <div>
+                    <div class="tn">سارة خالد</div>
+                    <div class="tl">الوعب، الدوحة</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="tc">
+                <div class="n-stars" style="margin-bottom: 10px">★★★★★</div>
+                <p class="tq" data-k="t3">
+                  «الممرضة تحدثت العربية بطلاقة وعاملت والدتي بكل كرامة ودفء.
+                  خدمة خمس نجوم بامتياز.»
+                </p>
+                <div class="ta">
+                  <div class="tav">HA</div>
+                  <div>
+                    <div class="tn">حسين الكواري</div>
+                    <div class="tl">الريان</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="tc">
+                <div class="n-stars" style="margin-bottom: 10px">★★★★★</div>
+                <p class="tq" data-k="t4">
+                  «الرعاية بعد الولادة كانت رائعة. لَيلى ساعدتني في الرضاعة التي
+                  كنت أعاني منها كثيراً. تغيّرت حياتنا!»
+                </p>
+                <div class="ta">
+                  <div class="tav">NA</div>
+                  <div>
+                    <div class="tn">نور الأنصاري</div>
+                    <div class="tl">مدينة لوسيل</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="faq-item">
-            <div class="faq-question">
-              <span data-en="Are nurses licensed?" data-ar="هل الممرضات مرخصات؟"
-                >Are nurses licensed?</span
-              ><i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <span
-                data-en="All QCHP licensed and vetted."
-                data-ar="جميع الممرضات مرخصات من وزارة الصحة."
-                >All QCHP licensed and vetted.</span
-              >
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS + DISCLAIMER -->
+    <section class="bg2">
+      <div class="container">
+        <div class="grid2">
+          <div>
+            <div class="sec-lbl" data-k="cLbl">الترخيص والاعتمادات</div>
+            <h2 class="sec-h" data-k="cH">رعاية منظمة يمكنك الوثوق بها</h2>
+            <p style="color: var(--muted); margin-bottom: 22px" data-k="cP">
+              يعمل CareQatar تحت الإشراف التنظيمي الكامل لوزارة الصحة العامة
+              (MOPH) ومجلس الصحة القطري (QHC).
+            </p>
+            <div class="cg">
+              <div class="ci">
+                <i class="fas fa-shield-alt"></i>
+                <div>رقم الترخيص<small>QH-2024-1847</small></div>
+              </div>
+              <div class="ci">
+                <i class="fas fa-hospital"></i>
+                <div>جهة الإشراف<small>MOPH Qatar</small></div>
+              </div>
+              <div class="ci">
+                <i class="fas fa-user-nurse"></i>
+                <div>ترخيص الممرضين<small>QHC Qatar</small></div>
+              </div>
+              <div class="ci">
+                <i class="fas fa-lock"></i>
+                <div>حماية البيانات<small>PDPL Compliant</small></div>
+              </div>
             </div>
           </div>
-          <div class="faq-item">
-            <div class="faq-question">
-              <span
-                data-en="Long-term care available?"
-                data-ar="هل تتوفر رعاية طويلة الأجل؟"
-                >Long-term care available?</span
-              ><i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <span data-en="Yes, flexible packages." data-ar="نعم، حزم مرنة."
-                >Yes, flexible packages.</span
+          <div class="disc">
+            <h3>
+              <i class="fas fa-exclamation-triangle"></i
+              ><span data-k="dT">إشعار طبي مهم</span>
+            </h3>
+            <p data-k="dI">
+              يقدم CareQatar خدمات دعم التمريض المنزلي. يرجى ملاحظة:
+            </p>
+            <ul>
+              <li data-k="d1">
+                هذه الخدمة لا تغني عن الرعاية الطبية الطارئة. في حالات الطوارئ
+                اتصل بـ ٩٩٩ فوراً.
+              </li>
+              <li data-k="d2">
+                ممرضونا لا يستطيعون وصف الأدوية أو إجراء العمليات الجراحية.
+              </li>
+              <li data-k="d3">يلزم وصفة طبيب مرخص في قطر لإعطاء الأدوية.</li>
+              <li data-k="d4">
+                إذا تدهورت حالة المريض سيوصي ممرضنا بنقله للمستشفى فوراً.
+              </li>
+            </ul>
+            <div
+              style="
+                margin-top: 14px;
+                padding: 11px;
+                background: rgba(224, 90, 48, 0.08);
+                border-radius: 10px;
+                font-size: 0.79rem;
+                color: #9a3010;
+                font-weight: 700;
+              "
+            >
+              <i class="fas fa-phone-alt"></i> &nbsp;<span data-k="dHL"
+                >خط الممرضين ٢٤/٧: </span
+              ><a href="tel:+97444112233" style="color: #c04020"
+                >+974 4411 2233</a
               >
             </div>
           </div>
@@ -969,285 +2499,1015 @@
       </div>
     </section>
 
-    <section id="contact">
-      <div
-        class="container"
-        style="
-          text-align: center;
-          background: linear-gradient(125deg, #e8f5e9, #e3f2fd);
-          border-radius: 2rem;
-          padding: 2rem;
-        "
-      >
-        <h2
-          style="font-size: 1.7rem"
-          data-en="Experience Premium Care"
-          data-ar="جرّب الرعاية الفاخرة"
-        >
-          Experience Premium Care
-        </h2>
-        <p
-          style="margin: 0.8rem 0"
-          data-en="Join hundreds of families"
-          data-ar="انضم إلى مئات العائلات"
-        >
-          Join hundreds of families
-        </p>
-        <button class="btn-primary" id="finalCTABook">
-          <i class="fas fa-calendar-alt"></i>
-          <span data-en="Request a Nurse" data-ar="طلب ممرضة"
-            >Request a Nurse</span
-          >
-        </button>
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="sh ctr">
+          <div class="sec-lbl">FAQ</div>
+          <h2 class="sec-h" data-k="fH">أسئلة يكثر طرحها</h2>
+        </div>
+        <div class="faq">
+          <div class="fi">
+            <div
+              class="fq"
+              onclick="faqToggle(this)"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <span data-k="fq1">هل ممرضوكم مرخصون في قطر؟</span
+              ><i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fa" data-k="fa1">
+              نعم. جميع ممرضي CareQatar يحملون ترخيصاً سارياً من مجلس الصحة
+              القطري (QHC). أرقام التراخيص معروضة في ملف كل ممرض. شركتنا تعمل
+              بموجب ترخيص MOPH رقم #QH-2024-1847.
+            </div>
+          </div>
+          <div class="fi">
+            <div
+              class="fq"
+              onclick="faqToggle(this)"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <span data-k="fq2">كم تستغرق مدة وصول الممرض؟</span
+              ><i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fa" data-k="fa2">
+              للحجوزات المخططة يصل الممرضون عادةً خلال ساعتين من التأكيد. لطلبات
+              نفس اليوم العاجلة متوسط وقت التوزيع أقل من ٩٠ دقيقة حسب موقعك في
+              قطر.
+            </div>
+          </div>
+          <div class="fi">
+            <div
+              class="fq"
+              onclick="faqToggle(this)"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <span data-k="fq3">ما المناطق التي تغطونها في قطر؟</span
+              ><i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fa" data-k="fa3">
+              نغطي جميع أنحاء قطر بما في ذلك الدوحة ولوسيل والريان والوكرة
+              والخور والشمال ودخان. قد تطبق رسوم إضافية للمناطق التي تبعد أكثر
+              من ٥٠ كم عن الدوحة.
+            </div>
+          </div>
+          <div class="fi">
+            <div
+              class="fq"
+              onclick="faqToggle(this)"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <span data-k="fq4">كيف تتم حماية بيانات المريض؟</span
+              ><i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fa" data-k="fa4">
+              نلتزم الامتثال الكامل لقانون خصوصية البيانات الشخصية (PDPL) في
+              قطر. يتم تخزين البيانات على خوادم مشفرة ولن تباع لأي طرف ثالث.
+            </div>
+          </div>
+          <div class="fi">
+            <div
+              class="fq"
+              onclick="faqToggle(this)"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <span data-k="fq5">هل يمكنني إلغاء أو إعادة جدولة حجزي؟</span
+              ><i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="fa" data-k="fa5">
+              نعم. الإلغاء قبل الموعد بأكثر من ٤ ساعات مجاني. الإلغاء في غضون ٤
+              ساعات يستلزم رسوم ٥٠ ريالاً. الرجاء الاتصال أو مراسلتنا عبر
+              واتساب.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+
+    <!-- FOOTER -->
     <footer>
-      <p>© 2025 Al MHD Nursing — Compassion. Excellence. Trust.</p>
+      <div class="container">
+        <div class="fg-grid">
+          <div class="fb">
+            <a href="#" class="logo"
+              ><div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+              CareQatar</a
+            >
+            <p style="margin-top: 12px" data-k="ftD">
+              تمريض منزلي معتمد في قطر، متاح ٢٤/٧. مرخص من MOPH ومنظم من QHC.
+            </p>
+            <div class="moph-b">
+              <i class="fas fa-shield-alt"></i>MOPH Qatar — #QH-2024-1847
+            </div>
+          </div>
+          <div class="fc-col">
+            <h4 data-k="ftS">الخدمات</h4>
+            <ul>
+              <li><a href="#services" data-k="sv1N">رعاية المسنين</a></li>
+              <li><a href="#services" data-k="sv2N">رعاية الأم والطفل</a></li>
+              <li><a href="#services" data-k="sv3N">العلاج الطبيعي</a></li>
+              <li>
+                <a href="#services" data-k="sv4N">رعاية ما بعد الجراحة</a>
+              </li>
+            </ul>
+          </div>
+          <div class="fc-col">
+            <h4 data-k="ftC">الشركة</h4>
+            <ul>
+              <li><a href="#nurses" data-k="navN">ممرضونا</a></li>
+              <li><a href="#pricing" data-k="navP">الأسعار</a></li>
+              <li><a href="#faq" data-k="navF">الأسئلة الشائعة</a></li>
+              <li><a href="#" data-k="ftPr">سياسة الخصوصية</a></li>
+              <li><a href="#" data-k="ftTm">شروط الخدمة</a></li>
+            </ul>
+          </div>
+          <div class="fc-col">
+            <h4 data-k="ftCo">تواصل معنا</h4>
+            <ul>
+              <li>
+                <i class="fas fa-phone-alt" style="color: var(--pr-l)"></i
+                ><a href="tel:+97444112233" style="color: #b0c4cc"
+                  >+974 4411 2233</a
+                >
+              </li>
+              <li>
+                <i class="fab fa-whatsapp" style="color: #25d366"></i
+                ><a
+                  href="https://wa.me/97451234567"
+                  target="_blank"
+                  style="color: #b0c4cc"
+                  >+974 5123 4567</a
+                >
+              </li>
+              <li>
+                <i class="fas fa-envelope" style="color: var(--pr-l)"></i
+                ><a href="mailto:care@careqatar.qa" style="color: #b0c4cc"
+                  >care@careqatar.qa</a
+                >
+              </li>
+              <li style="align-items: flex-start">
+                <i
+                  class="fas fa-map-marker-alt"
+                  style="color: var(--pr-l); margin-top: 2px"
+                ></i
+                ><span>West Bay Business Tower, Floor 12, Doha</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="f-bottom">
+          <div>
+            © 2025 CareQatar W.L.L —
+            <span data-k="ftR">جميع الحقوق محفوظة</span>
+          </div>
+          <div class="f-legal">
+            <a href="#" data-k="ftPr">سياسة الخصوصية</a>
+            <a href="#" data-k="ftTm">شروط الخدمة</a>
+            <a href="#" data-k="ftDi">إخلاء المسؤولية الطبي</a>
+          </div>
+        </div>
+      </div>
     </footer>
 
-    <div class="sticky-cta" id="stickyCta">
-      <button class="btn-primary" id="stickyBookBtn">
-        <i class="fas fa-calendar-check"></i>
-        <span data-en="Book" data-ar="احجز">Book</span></button
-      ><button class="btn-outline" id="stickyWhatsappBtn">
-        <i class="fab fa-whatsapp"></i>
-        <span data-en="WhatsApp" data-ar="واتساب">WhatsApp</span>
-      </button>
-    </div>
+    <!-- FLOATING BUTTONS — WhatsApp right, Chat left -->
+    <button class="f-wa" onclick="openWA()" aria-label="WhatsApp">
+      <i class="fab fa-whatsapp" style="font-size: 25px; color: #fff"></i>
+    </button>
+    <button class="f-chat" id="chatBtn" aria-label="مساعد CareQatar">
+      <i class="fas fa-comment-dots" style="font-size: 21px; color: #fff"></i>
+    </button>
 
-    <div class="chatbot-float">
-      <div class="chat-toggle-btn" id="chatToggleIcon">
-        <i class="fas fa-comment-medical"></i>
+    <!-- CHAT WINDOW (anchored to chat button on left) -->
+    <div class="chat-win" id="chatWin">
+      <div class="ch">
+        <div class="ch-l">
+          <div class="ch-av"><i class="fas fa-robot"></i></div>
+          <div>
+            <div class="ch-n">CareQatar Assistant</div>
+            <div class="ch-s" data-k="con">متصل الآن</div>
+          </div>
+        </div>
+        <button class="ch-close" id="chatClose">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <div class="chat-window-ui" id="chatWindowBox">
-        <div
-          class="chat-header-ui"
-          style="background: var(--primary-blue); color: white; padding: 0.7rem"
-        >
-          Al MHD Assistant
-        </div>
-        <div
-          class="chat-msgs"
-          id="chatMessagesList"
-          style="height: 240px; overflow-y: auto; padding: 0.8rem"
-        >
-          <div>🤝 Hello! How can we help?</div>
-        </div>
-        <div style="display: flex">
-          <input
-            type="text"
-            id="chatMsgInput"
-            placeholder="Type..."
-            style="flex: 1; padding: 0.7rem; border: none"
-          /><button
-            id="sendChatMsg"
-            style="
-              background: var(--primary-blue);
-              border: none;
-              padding: 0 1rem;
-              color: white;
-            "
-          >
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
+      <div class="cms" id="chatMsgs"></div>
+      <div class="cin-row">
+        <input type="text" id="chatIn" placeholder="اكتب رسالة..." />
+        <button class="cin-send" id="chatSend">
+          <i class="fas fa-paper-plane"></i>
+        </button>
       </div>
     </div>
 
+    <!-- GOOGLE SHEETS SETUP MODAL -->
+    <div class="modal-bg" id="setupModal">
+      <div class="modal">
+        <button class="modal-close" onclick="closeSetup()">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3>
+          <i class="fas fa-table" style="color: var(--pr)"></i> إعداد Google
+          Sheets
+        </h3>
+        <p style="font-size: 0.83rem; color: var(--muted); margin-bottom: 14px">
+          اتبع الخطوات التالية لربط الحجوزات بجدول Google Sheets:
+        </p>
+        <ol>
+          <li>
+            افتح
+            <a href="https://sheet.new" target="_blank" style="color: var(--pr)"
+              >sheet.new</a
+            >
+            وأنشئ جدولاً جديداً
+          </li>
+          <li>افتح <b>Extensions › Apps Script</b> والصق الكود التالي:</li>
+        </ol>
+        <pre>
+function doPost(e){
+  var s = SpreadsheetApp
+    .getActiveSpreadsheet()
+    .getActiveSheet();
+  var d = JSON.parse(e.parameter.payload);
+  s.appendRow([
+    new Date(),
+    d.patientName, d.service,
+    d.condition,   d.age,
+    d.duration,    d.price,
+    d.date,        d.time,
+    d.area,        d.phone,
+    d.lang,        d.submittedAt
+  ]);
+  return ContentService
+    .createTextOutput(
+      JSON.stringify({status:'ok'})
+    )
+    .setMimeType(
+      ContentService.MimeType.JSON
+    );
+}
+function doGet(e){
+  return ContentService
+    .createTextOutput('Webhook Active');
+}</pre
+        >
+        <ol start="3">
+          <li>اضغط <b>Deploy › New deployment</b></li>
+          <li>
+            اختر <b>Web App</b> — Execute as: <b>Me</b> — Who has access:
+            <b>Anyone</b>
+          </li>
+          <li>انسخ رابط الـ Deployment والصقه هنا:</li>
+        </ol>
+        <input
+          type="text"
+          id="sheetsUrlInput"
+          class="fc"
+          placeholder="https://script.google.com/macros/s/..."
+          style="margin: 10px 0"
+        />
+        <button
+          class="btn btn-pr"
+          onclick="saveSheetsUrl()"
+          style="width: 100%; margin-top: 6px"
+        >
+          <i class="fas fa-save"></i> حفظ الرابط
+        </button>
+        <p
+          id="setupMsg"
+          style="
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--gr);
+            display: none;
+          "
+        >
+          <i class="fas fa-check-circle"></i> تم حفظ الرابط بنجاح!
+        </p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-      let currentLang = "en";
-      function updateLang() {
-        document.querySelectorAll("[data-en]").forEach((el) => {
-          el.innerText =
-            currentLang === "en"
-              ? el.getAttribute("data-en")
-              : el.getAttribute("data-ar");
-        });
-        document.body.classList.toggle("rtl", currentLang === "ar");
-        document.querySelectorAll(".lang-toggle-btn").forEach((btn) => {
-          if (btn)
-            btn.innerHTML = currentLang === "en" ? "🌐 العربية" : "🌐 English";
-        });
-      }
-      function toggleLang() {
-        currentLang = currentLang === "en" ? "ar" : "en";
-        updateLang();
-        renderStepContent();
-        renderStepsUI();
-      }
-      document
-        .getElementById("desktopLangToggle")
-        ?.addEventListener("click", toggleLang);
-      document
-        .getElementById("mobileLangToggle")
-        ?.addEventListener("click", toggleLang);
-      updateLang();
+      // ════════════════════════════════════════════
+      // CONFIG — ضع رابط Google Apps Script هنا
+      // ════════════════════════════════════════════
+      let SHEETS_URL = localStorage.getItem("cq_sheets_url") || "";
 
-      const hamburger = document.getElementById("hamburgerBtn"),
-        mobileMenu = document.getElementById("mobileMenu"),
-        overlay = document.getElementById("overlay");
-      function closeMenu() {
-        mobileMenu.classList.remove("open");
-        overlay.style.display = "none";
+      // ════════════════════════════════════════════
+      // TRANSLATIONS
+      // ════════════════════════════════════════════
+      const TR = {
+        ar: {
+          navP: "الأسعار",
+          navS: "الخدمات",
+          navN: "الممرضون",
+          navF: "الأسئلة الشائعة",
+          licTag: "مرخص من وزارة الصحة MOPH • #QH-2024-1847",
+          heroH:
+            'رعاية تمريض منزلية <span style="color:var(--pr)">احترافية</span> في قطر',
+          heroP:
+            "ممرضون معتمدون يصلون إلى منزلك في غضون ساعات. موثوق من أكثر من ١٢٠٠ عائلة في جميع أنحاء قطر.",
+          st1: "مريض تم علاجه",
+          st2: "متوسط التقييم",
+          st3: "الإتاحة",
+          st4: "وقت الاستجابة",
+          pfrom: "يبدأ من",
+          pincl: "يشمل",
+          pinclD: "الممرضة + المعدات",
+          stepLbl: "الخطوة {n} من ٥",
+          q1: "١ — ما الذي يصف حالة المريض بشكل أفضل؟",
+          q2: "٢ — الفئة العمرية للمريض؟",
+          q3: "٣ — كم من الوقت تحتاج للرعاية؟",
+          q4: "٤ — متى تحتاج الرعاية؟",
+          q5: "٥ — بيانات التواصل",
+          o1: "كبار السن / ضعف",
+          o2: "أم ومولود",
+          o3: "حركة / علاج طبيعي",
+          o4: "بعد الجراحة",
+          od1: "١-٣ أيام",
+          od2: "أسابيع",
+          od3: "طويل الأمد",
+          rfrom: "يبدأ من",
+          ld: "التاريخ المفضل",
+          lt: "الوقت المفضل",
+          ln: "اسم المريض",
+          la: "المنطقة في قطر",
+          lp: "رقم الهاتف",
+          ed: "الرجاء اختيار تاريخ صحيح في المستقبل",
+          et: "الرجاء اختيار الوقت",
+          en: "الرجاء إدخال اسم المريض",
+          ea: "الرجاء إدخال منطقتك",
+          ep: "رقم هاتف غير صحيح (٨-١٥ رقماً)",
+          prv: "بياناتك محمية بموجب قانون PDPL القطري. لن نشارك معلوماتك مع أطراف ثالثة.",
+          back: "← رجوع",
+          next: "التالي →",
+          sub: "إتمام الحجز",
+          snd: "جارٍ إرسال حجزك...",
+          sOK: "تم تأكيد الحجز!",
+          sMsg: "استلمنا طلبك. سيتصل بك فريقنا خلال ٣٠ دقيقة للتأكيد وتخصيص الممرضة المناسبة.",
+          wab: "تواصل عبر واتساب",
+          nb: "حجز جديد",
+          pLbl: "أسعار شفافة",
+          pH: "أسعار واضحة بدون مفاجآت",
+          pSub: "جميع الأسعار تشمل ممرضاً معتمداً والمعدات الأساسية والتنقل داخل قطر. شامل ضريبة القيمة المضافة.",
+          pl1: "رعاية يومية",
+          pl2: "رعاية أسبوعية",
+          pl3: "رعاية شهرية",
+          pd: " ريال / يوم",
+          pop: "الأكثر طلباً",
+          cp: "اختر الخطة",
+          f11: "زيارة ممرض معتمد (٨ ساعات)",
+          f12: "معدات طبية أساسية",
+          f13: "تقرير يومي للعائلة",
+          f14: "خط دعم ٢٤/٧",
+          f21: "كل ما في الرعاية اليومية",
+          f22: "أولوية في تعيين الممرض",
+          f23: "استشارة طبية (مرة/أسبوع)",
+          f24: "منسق رعاية مخصص",
+          f31: "كل ما في الرعاية الأسبوعية",
+          f32: "نفس الممرض في كل زيارة",
+          f33: "تقرير صحي شهري",
+          f34: "جلسة تدريب للعائلة",
+          pNote:
+            "جلسات العلاج الطبيعي بأسعار منفصلة. تواصل معنا لباقات العناية المركزة.",
+          sLbl: "ما نقدمه",
+          sH: "خدمات الرعاية المنزلية المتخصصة",
+          sSub: "كل خدمة تقدمها ممرضات مدربات تحديداً في هذا المجال.",
+          sv1N: "رعاية المسنين",
+          sv1D: "مساعدة في الحياة اليومية وإدارة الأدوية والمرافقة ودعم الحركة.",
+          sv2N: "رعاية الأم والطفل",
+          sv2D: "رعاية ما بعد الولادة ودعم الرضاعة ومتابعة حديثي الولادة.",
+          sv3N: "العلاج الطبيعي المنزلي",
+          sv3D: "جلسات تعافٍ وتمارين حركية وإعادة تأهيل بواسطة معالجين مرخصين.",
+          sv4N: "رعاية ما بعد الجراحة",
+          sv4D: "تضميد الجروح وإدارة المصارف ومراقبة العلامات الحيوية.",
+          hwLbl: "عملية بسيطة",
+          hwH: "كيف نعمل",
+          hw1H: "اختر واحجز",
+          hw1P: "أجب على ٥ أسئلة سريعة واحجز في أقل من ٣ دقائق.",
+          hw2H: "نؤكد لك",
+          hw2P: "يتصل بك فريقنا خلال ٣٠ دقيقة لتأكيد الحجز.",
+          hw3H: "الممرض يصل",
+          hw3P: "يصل ممرضك المعتمد في الوقت المحدد مع جميع المعدات.",
+          hw4H: "رعاية مستمرة",
+          hw4P: "تقارير يومية ترسل للعائلة. يمكن تعديل الخطة في أي وقت.",
+          nLbl: "فريقنا",
+          nH: "تعرف على ممرضينا المعتمدين",
+          nSub: "جميع الممرضين يحملون ترخيصاً سارياً من مجلس الصحة القطري QHC.",
+          sp1: "رعاية المسنين",
+          sp2: "العلاج الطبيعي",
+          sp3: "رعاية الأم والطفل",
+          nx1: "٨ سنوات خبرة",
+          nx2: "٦ سنوات خبرة",
+          nx3: "١٠ سنوات خبرة",
+          tLbl: "قصص المرضى",
+          tH: "العائلات تثق بـ CareQatar",
+          t1: "«فاطمة كانت احترافية وحانية. تحسن والدي بشكل أسرع بكثير مما كنا نتوقع. الممرضة كانت تتواصل معنا يومياً.»",
+          t2: "«بعد عمليتي جعل CareQatar التعافي سهلاً. الممرضة كانت متاحة على واتساب في أي وقت.»",
+          t3: "«الممرضة تحدثت العربية بطلاقة وعاملت والدتي بكل كرامة ودفء. خدمة خمس نجوم.»",
+          t4: "«الرعاية بعد الولادة كانت رائعة. لَيلى ساعدتني في الرضاعة التي كنت أعاني منها.»",
+          cLbl: "الترخيص والاعتمادات",
+          cH: "رعاية منظمة يمكنك الوثوق بها",
+          cP: "يعمل CareQatar تحت الإشراف التنظيمي الكامل لوزارة الصحة العامة ومجلس الصحة القطري.",
+          dT: "إشعار طبي مهم",
+          dI: "يقدم CareQatar خدمات دعم التمريض المنزلي. يرجى ملاحظة:",
+          d1: "هذه الخدمة لا تغني عن الرعاية الطارئة. في حالات الطوارئ اتصل بـ ٩٩٩ فوراً.",
+          d2: "ممرضونا لا يستطيعون وصف الأدوية أو إجراء العمليات الجراحية.",
+          d3: "يلزم وصفة طبيب مرخص في قطر لإعطاء الأدوية.",
+          d4: "إذا تدهورت حالة المريض سيوصي ممرضنا بنقله للمستشفى فوراً.",
+          dHL: "خط الممرضين ٢٤/٧: ",
+          fH: "أسئلة يكثر طرحها",
+          fq1: "هل ممرضوكم مرخصون في قطر؟",
+          fa1: "نعم. جميع ممرضي CareQatar يحملون ترخيصاً سارياً من QHC. شركتنا تعمل بموجب ترخيص MOPH رقم #QH-2024-1847.",
+          fq2: "كم تستغرق مدة وصول الممرض؟",
+          fa2: "للحجوزات المخططة يصل الممرضون خلال ساعتين من التأكيد. لطلبات نفس اليوم متوسط وقت التوزيع أقل من ٩٠ دقيقة.",
+          fq3: "ما المناطق التي تغطونها في قطر؟",
+          fa3: "نغطي جميع أنحاء قطر: الدوحة ولوسيل والريان والوكرة والخور والشمال ودخان.",
+          fq4: "كيف تتم حماية بيانات المريض؟",
+          fa4: "نلتزم الامتثال الكامل لقانون PDPL. البيانات على خوادم مشفرة ولن تباع لأي طرف ثالث.",
+          fq5: "هل يمكنني إلغاء أو إعادة جدولة حجزي؟",
+          fa5: "نعم. الإلغاء قبل ٤ ساعات مجاني. بعدها رسوم إلغاء ٥٠ ريالاً. تواصل معنا عبر واتساب.",
+          tL1: "مرخص MOPH",
+          tL2: "تقييم المرضى",
+          tL3: "ممرض معتمد",
+          tL4: "متوسط الاستجابة",
+          tL5: "التغطية",
+          tV5: "جميع أنحاء قطر",
+          tL6: "حماية البيانات",
+          ftD: "تمريض منزلي معتمد في قطر، متاح ٢٤/٧. مرخص من MOPH ومنظم من QHC.",
+          ftS: "الخدمات",
+          ftC: "الشركة",
+          ftCo: "تواصل معنا",
+          ftR: "جميع الحقوق محفوظة",
+          ftPr: "سياسة الخصوصية",
+          ftTm: "شروط الخدمة",
+          ftDi: "إخلاء المسؤولية الطبي",
+          con: "متصل الآن",
+          setupLink: "إعداد Google Sheets",
+          chatW:
+            "مرحباً! أنا مساعد CareQatar. اسألني عن الأسعار أو الخدمات أو طريقة الحجز. اكتب «سعر» أو «حجز» للبدء!",
+          chatPR:
+            "أسعارنا تبدأ من ١٤٠ ريال/يوم للخطة الشهرية، ١٦٥ للأسبوعية، ١٩٠ لليومية. الأسعار تشمل الممرضة والمعدات.",
+          chatBK:
+            "يمكنك الحجز مباشرةً باستخدام النموذج في أعلى الصفحة. انتقل للأعلى والمعالج الخماسي سيرشدك.",
+          chatLC:
+            "نعم! CareQatar مرخص من MOPH ترخيص #QH-2024-1847. جميع ممرضينا مرخصون من مجلس الصحة القطري QHC.",
+          chatDef:
+            "شكراً لرسالتك! للمساعدة اتصل على +974 4411 2233 أو واتساب +974 5123 4567. نحن متاحون ٢٤/٧.",
+        },
+        en: {
+          navP: "Pricing",
+          navS: "Services",
+          navN: "Nurses",
+          navF: "FAQ",
+          licTag: "MOPH Licensed • License #QH-2024-1847",
+          heroH:
+            'Professional Home <span style="color:var(--pr)">Nursing Care</span> in Qatar',
+          heroP:
+            "Certified nurses arrive at your home within hours. Trusted by 1,200+ families across Qatar.",
+          st1: "Patients Served",
+          st2: "Avg Rating",
+          st3: "Availability",
+          st4: "Response Time",
+          pfrom: "Starting from",
+          pincl: "Includes",
+          pinclD: "Nurse + Equipment",
+          stepLbl: "Step {n} of 5",
+          q1: "1 — What best describes the patient's needs?",
+          q2: "2 — Patient age group?",
+          q3: "3 — How long is care needed?",
+          q4: "4 — When do you need care?",
+          q5: "5 — Your contact details",
+          o1: "Elderly / Weakness",
+          o2: "Mother & Newborn",
+          o3: "Mobility / Physio",
+          o4: "Post-Surgery",
+          od1: "1–3 days",
+          od2: "Weeks",
+          od3: "Long-term",
+          rfrom: "Starting from",
+          ld: "Preferred Date",
+          lt: "Preferred Time",
+          ln: "Patient Name",
+          la: "Area in Qatar",
+          lp: "Phone Number",
+          ed: "Please select a valid future date",
+          et: "Please select a time",
+          en: "Please enter patient name",
+          ea: "Please enter your area",
+          ep: "Invalid phone number (8-15 digits)",
+          prv: "Your data is protected under Qatar PDPL. We never share your information with third parties.",
+          back: "← Back",
+          next: "Next →",
+          sub: "Complete Booking",
+          snd: "Sending your booking...",
+          sOK: "Booking Confirmed!",
+          sMsg: "We've received your request. Our team will call you within 30 minutes to confirm and assign the right nurse.",
+          wab: "Chat on WhatsApp",
+          nb: "New Booking",
+          pLbl: "Transparent Pricing",
+          pH: "Clear Costs, No Surprises",
+          pSub: "All prices include a certified nurse, basic equipment, and travel within Qatar. VAT included.",
+          pl1: "Daily Care",
+          pl2: "Weekly Care",
+          pl3: "Monthly Care",
+          pd: " QAR / day",
+          pop: "Most Popular",
+          cp: "Choose Plan",
+          f11: "Certified nurse visit (8 hrs)",
+          f12: "Basic medical equipment",
+          f13: "Daily report to family",
+          f14: "24/7 support line",
+          f21: "Everything in Daily Care",
+          f22: "Priority nurse assignment",
+          f23: "Doctor consultation (1x/week)",
+          f24: "Dedicated care coordinator",
+          f31: "Everything in Weekly Care",
+          f32: "Same nurse every visit",
+          f33: "Monthly health report",
+          f34: "Family training session",
+          pNote:
+            "Physiotherapy sessions priced separately. Contact us for ICU or ventilator care packages.",
+          sLbl: "What We Offer",
+          sH: "Specialized Home Care Services",
+          sSub: "Each service is delivered by nurses specifically trained in that area of care.",
+          sv1N: "Elderly Care",
+          sv1D: "Daily living assistance, medication management and mobility support for senior patients.",
+          sv2N: "Mother & Baby Care",
+          sv2D: "Expert postnatal care, breastfeeding support and newborn monitoring.",
+          sv3N: "Physiotherapy at Home",
+          sv3D: "Personalised recovery sessions and rehabilitation by licensed physiotherapists.",
+          sv4N: "Post-Surgery Care",
+          sv4D: "Wound dressing, drain management, vital monitoring and rehab support.",
+          hwLbl: "Simple Process",
+          hwH: "How It Works",
+          hw1H: "Choose & Book",
+          hw1P: "Answer 5 quick questions and book online in under 3 minutes.",
+          hw2H: "We Confirm",
+          hw2P: "Our team calls you within 30 minutes to confirm and match the right nurse.",
+          hw3H: "Nurse Arrives",
+          hw3P: "Your certified nurse arrives on time with all necessary equipment.",
+          hw4H: "Ongoing Care",
+          hw4P: "Daily reports sent to family. Adjust care plan anytime.",
+          nLbl: "Our Team",
+          nH: "Meet Our Certified Nurses",
+          nSub: "All nurses hold a valid Qatar Health Council (QHC) nursing license and undergo annual training.",
+          sp1: "Elderly Care",
+          sp2: "Physiotherapy",
+          sp3: "Mother & Baby",
+          nx1: "8 years experience",
+          nx2: "6 years experience",
+          nx3: "10 years experience",
+          tLbl: "Patient Stories",
+          tH: "Families Trust CareQatar",
+          t1: '"Fatima was incredibly professional and caring. My father\'s recovery improved much faster than expected."',
+          t2: '"After my surgery, CareQatar made recovery seamless. The nurse was on WhatsApp any time I had a question."',
+          t3: '"The nurse spoke Arabic fluently and treated my mother with such dignity and warmth. Truly 5-star."',
+          t4: '"The postnatal care was amazing. Layla helped me with breastfeeding which I was really struggling with."',
+          cLbl: "Licensing & Credentials",
+          cH: "Regulated Care You Can Trust",
+          cP: "CareQatar operates under full regulatory oversight of the Ministry of Public Health (MOPH) Qatar and the Qatar Health Council (QHC).",
+          dT: "Important Medical Notice",
+          dI: "CareQatar provides home nursing support. Please note:",
+          d1: "This service does NOT replace emergency medical care. For emergencies, call 999 immediately.",
+          d2: "Our nurses cannot prescribe medications or perform surgical procedures.",
+          d3: "A valid prescription from a licensed Qatar physician is required for medication administration.",
+          d4: "If a patient's condition deteriorates, our nurse will advise transferring to a hospital.",
+          dHL: "24/7 Nurse Hotline: ",
+          fH: "Frequently Asked Questions",
+          fq1: "Are your nurses licensed in Qatar?",
+          fa1: "Yes. All CareQatar nurses hold a valid QHC nursing license. Our company operates under MOPH license #QH-2024-1847.",
+          fq2: "How quickly can a nurse arrive?",
+          fa2: "For planned bookings, nurses arrive within 2 hours of confirmation. For urgent same-day requests, under 90 minutes.",
+          fq3: "What areas of Qatar do you cover?",
+          fa3: "We cover all of Qatar: Doha, Lusail, Al Rayyan, Al Wakra, Al Khor, Al Shamal, and Dukhan.",
+          fq4: "How is patient data protected?",
+          fa4: "We comply fully with Qatar's PDPL. Patient data is stored on encrypted servers and never sold to third parties.",
+          fq5: "Can I cancel or reschedule my booking?",
+          fa5: "Yes. Cancellations more than 4 hours before are free. Within 4 hours incurs a 50 QAR fee. Call or WhatsApp us to reschedule.",
+          tL1: "MOPH Licensed",
+          tL2: "Patient Rating",
+          tL3: "Certified Nurses",
+          tL4: "Avg Response",
+          tL5: "Coverage",
+          tV5: "All Qatar",
+          tL6: "Data Protection",
+          ftD: "Certified home nursing in Qatar, available 24/7. MOPH licensed and QHC regulated.",
+          ftS: "Services",
+          ftC: "Company",
+          ftCo: "Contact",
+          ftR: "All Rights Reserved",
+          ftPr: "Privacy Policy",
+          ftTm: "Terms of Service",
+          ftDi: "Medical Disclaimer",
+          con: "Online now",
+          setupLink: "Setup Google Sheets",
+          chatW:
+            "Hi! I'm the CareQatar assistant. Ask me about prices, services, or how to book. Type 'price' or 'book' to get started!",
+          chatPR:
+            "Prices start from 140 QAR/day (monthly), 165 QAR/day (weekly), 190 QAR/day (daily). All include a certified nurse + equipment.",
+          chatBK:
+            "You can book directly using the form at the top of this page. Scroll up and our 5-step wizard will guide you through.",
+          chatLC:
+            "Yes! CareQatar is licensed by MOPH Qatar (License #QH-2024-1847). All our nurses are individually licensed by the QHC.",
+          chatDef:
+            "Thanks for your message! For detailed help call +974 4411 2233 or WhatsApp +974 5123 4567. We're available 24/7.",
+        },
+      };
+
+      let lang = "ar";
+      const QD = {}; // quiz data
+
+      // ════════ Language switch ════════
+      function applyLang(l) {
+        lang = l;
+        const t = TR[l];
+        document.querySelectorAll("[data-k]").forEach((el) => {
+          const k = el.getAttribute("data-k");
+          if (t[k] !== undefined) {
+            if (k === "heroH") el.innerHTML = t[k];
+            else el.textContent = t[k];
+          }
+        });
+        document.body.classList.toggle("en", l === "en");
+        document.documentElement.lang = l;
+        document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+        document.getElementById("langBtn").textContent =
+          l === "ar" ? "English" : "عربي";
+        // back/next buttons direction
+        document.querySelectorAll('.btn-ol[onclick*="goTo"]').forEach((b) => {
+          b.textContent = t.back;
+        });
+        document
+          .querySelectorAll(
+            '.btn-pr[onclick*="nextStep"], .btn-pr[onclick*="valDate"]',
+          )
+          .forEach((b) => {
+            b.textContent = t.next;
+          });
+        updateStepLabel();
+        // update ebar
+        document.getElementById("ebarText").innerHTML =
+          l === "ar"
+            ? `طوارئ ٢٤/٧: <a href="tel:+97444112233">+974 4411 2233</a> &nbsp;|&nbsp; مرخص من <strong>وزارة الصحة MOPH</strong> — #QH-2024-1847`
+            : `24/7 Emergency: <a href="tel:+97444112233">+974 4411 2233</a> &nbsp;|&nbsp; Licensed by <strong>MOPH Qatar</strong> — #QH-2024-1847`;
       }
-      hamburger?.addEventListener("click", () => {
-        mobileMenu.classList.add("open");
-        overlay.style.display = "block";
+      document.getElementById("langBtn").addEventListener("click", () => {
+        applyLang(lang === "ar" ? "en" : "ar");
+      });
+
+      // ════════ Drawer ════════
+      const drawerBg = document.getElementById("drawerBg");
+      const drawer = document.getElementById("drawer");
+      document.getElementById("hamBtn").addEventListener("click", () => {
+        drawerBg.classList.add("open");
+        drawer.classList.add("open");
       });
       document
-        .getElementById("closeMenuBtn")
-        ?.addEventListener("click", closeMenu);
-      overlay?.addEventListener("click", closeMenu);
-
-      let step = 1,
-        booking = { service: "", time: "", location: "" };
-      const stepWrapper = document.getElementById("stepIndicatorWrapper"),
-        stepContent = document.getElementById("stepDynamicContent");
-      function renderStepsUI() {
-        stepWrapper.innerHTML = "";
-        const labels = ["Service", "Time", "Location", "Confirm"];
-        const arLabels = ["الخدمة", "الوقت", "الموقع", "تأكيد"];
-        labels.forEach((name, i) => {
-          const btn = document.createElement("div");
-          btn.className = `step-btn ${step === i + 1 ? "active-step" : ""}`;
-          btn.innerText = `${i + 1}. ${currentLang === "en" ? name : arLabels[i]}`;
-          btn.onclick = () => {
-            if (i + 1 <= step) {
-              step = i + 1;
-              renderStepContent();
-              renderStepsUI();
-            }
-          };
-          stepWrapper.appendChild(btn);
-        });
+        .getElementById("drawerClose")
+        .addEventListener("click", closeDrawer);
+      drawerBg.addEventListener("click", (e) => {
+        if (e.target === drawerBg) closeDrawer();
+      });
+      function closeDrawer() {
+        drawerBg.classList.remove("open");
+        drawer.classList.remove("open");
       }
-      function renderStepContent() {
-        if (step === 1)
-          stepContent.innerHTML = `<h3>${currentLang === "en" ? "Select Service" : "اختر الخدمة"}</h3><div style="display:flex;flex-direction:column;gap:0.8rem;" id="servOpts"><div data-serv="Elderly Care" class="service-option">👴 ${currentLang === "en" ? "Elderly Care" : "رعاية المسنين"}</div><div data-serv="Postnatal Care" class="service-option">🤱 ${currentLang === "en" ? "Postnatal Care" : "رعاية ما بعد الولادة"}</div><div data-serv="Chronic Care" class="service-option">💊 ${currentLang === "en" ? "Chronic Care" : "الرعاية المزمنة"}</div></div><button id="next1" class="btn-primary" style="margin-top:1rem;">${currentLang === "en" ? "Next" : "التالي"}</button>`;
-        else if (step === 2)
-          stepContent.innerHTML = `<h3>${currentLang === "en" ? "Select Time" : "اختر الوقت"}</h3><select id="timeSelect"><option>Morning (8-12)</option><option>Afternoon (1-5)</option><option>Evening (6-10)</option></select><button id="next2" class="btn-primary" style="margin-top:1rem;">${currentLang === "en" ? "Next" : "التالي"}</button>`;
-        else if (step === 3)
-          stepContent.innerHTML = `<h3>${currentLang === "en" ? "Location in Qatar" : "الموقع في قطر"}</h3><input id="locInput" placeholder="${currentLang === "en" ? "Area / Zone" : "المنطقة"}"><button id="next3" class="btn-primary" style="margin-top:1rem;">${currentLang === "en" ? "Next" : "التالي"}</button>`;
-        else
-          stepContent.innerHTML = `<h3>${currentLang === "en" ? "Confirm Booking" : "تأكيد الحجز"}</h3><p><strong>${currentLang === "en" ? "Service" : "خدمة"}:</strong> ${booking.service || "-"}</p><p><strong>${currentLang === "en" ? "Time" : "الوقت"}:</strong> ${booking.time || "-"}</p><p><strong>${currentLang === "en" ? "Location" : "الموقع"}:</strong> ${booking.location || "-"}</p><button id="submitBooking" class="btn-primary">${currentLang === "en" ? "Submit" : "إرسال"}</button><div id="successMsg"></div>`;
 
-        if (step === 1) {
-          document.querySelectorAll(".service-option").forEach(
-            (el) =>
-              (el.onclick = (e) => {
-                document
-                  .querySelectorAll(".service-option")
-                  .forEach((opt) => opt.classList.remove("selected"));
-                el.classList.add("selected");
-                booking.service = el.getAttribute("data-serv");
-              }),
-          );
-          document.getElementById("next1").onclick = () => {
-            if (booking.service) {
-              step = 2;
-              renderStepContent();
-              renderStepsUI();
-            } else alert(currentLang === "en" ? "Select service" : "اختر خدمة");
-          };
-        }
-        if (step === 2)
-          document.getElementById("next2").onclick = () => {
-            booking.time = document.getElementById("timeSelect").value;
-            step = 3;
-            renderStepContent();
-            renderStepsUI();
-          };
-        if (step === 3)
-          document.getElementById("next3").onclick = () => {
-            const val = document.getElementById("locInput").value;
-            if (val) {
-              booking.location = val;
-              step = 4;
-              renderStepContent();
-              renderStepsUI();
-            } else
-              alert(currentLang === "en" ? "Enter location" : "أدخل الموقع");
-          };
-        if (step === 4)
-          document.getElementById("submitBooking").onclick = () => {
-            document.getElementById("successMsg").innerHTML =
-              `<div style="background:var(--light-green); padding:0.8rem; border-radius:1rem;">✅ ${currentLang === "en" ? "Request sent! We will contact you." : "تم الإرسال! سنتواصل معك."}</div>`;
-            setTimeout(() => {
-              step = 1;
-              booking = { service: "", time: "", location: "" };
-              renderStepContent();
-              renderStepsUI();
-            }, 2000);
-          };
-      }
-      renderStepsUI();
-      renderStepContent();
-
-      const scrollToBooking = () =>
+      // ════════ Scroll helpers ════════
+      function scrollToForm() {
         document
-          .getElementById("booking")
-          .scrollIntoView({ behavior: "smooth" });
-      document
-        .getElementById("heroBookScroll")
-        ?.addEventListener("click", scrollToBooking);
-      document
-        .getElementById("finalCTABook")
-        ?.addEventListener("click", scrollToBooking);
-      document
-        .getElementById("stickyBookBtn")
-        ?.addEventListener("click", scrollToBooking);
-      const whatsappLink = () =>
-        window.open(
-          "https://wa.me/97412345678?text=Hello%20Al%20MHD%20Nursing",
-          "_blank",
-        );
-      document
-        .getElementById("heroWhatsapp")
-        ?.addEventListener("click", whatsappLink);
-      document
-        .getElementById("stickyWhatsappBtn")
-        ?.addEventListener("click", whatsappLink);
+          .getElementById("bookingSection")
+          .scrollIntoView({ behavior: "smooth", block: "center" });
+      }
 
-      document.querySelectorAll(".faq-question").forEach((q) =>
-        q.addEventListener("click", () => {
-          const ans = q.nextElementSibling;
-          ans.style.maxHeight = ans.style.maxHeight
-            ? null
-            : ans.scrollHeight + "px";
-        }),
-      );
-
-      const chatWin = document.getElementById("chatWindowBox");
-      document.getElementById("chatToggleIcon").onclick = () => {
-        chatWin.style.display =
-          chatWin.style.display === "flex" ? "none" : "flex";
-      };
-      document.getElementById("sendChatMsg").onclick = () => {
-        const inp = document.getElementById("chatMsgInput");
-        if (inp.value.trim()) {
-          const d = document.createElement("div");
-          d.innerText = `👤 ${inp.value}`;
-          document.getElementById("chatMessagesList").appendChild(d);
-          inp.value = "";
-          setTimeout(() => {
-            const r = document.createElement("div");
-            r.innerText = "💙 Thank you! A specialist will reply.";
-            document.getElementById("chatMessagesList").appendChild(r);
-          }, 500);
+      // ════════ Progress ════════
+      let curStep = 1;
+      function updateStepLabel() {
+        const lbl = TR[lang].stepLbl.replace("{n}", curStep);
+        document.getElementById("stepLbl").textContent = lbl;
+        document.getElementById("stepPct").textContent =
+          Math.round((curStep / 5) * 100) + "%";
+        for (let i = 1; i <= 5; i++) {
+          const pb = document.getElementById("pb" + i);
+          pb.className = "pb";
+          if (i < curStep) pb.classList.add("done");
+          else if (i === curStep) pb.classList.add("active");
         }
+      }
+
+      function goTo(n) {
+        curStep = n;
+        document
+          .querySelectorAll(".qstep")
+          .forEach((s) => s.classList.remove("active"));
+        const t = document.getElementById("s" + n);
+        if (t) t.classList.add("active");
+        updateStepLabel();
+      }
+
+      // ════════ Option picking ════════
+      function pick(btn, field, step) {
+        const container = btn.closest(".qstep");
+        container
+          .querySelectorAll(".qo")
+          .forEach((b) => b.classList.remove("sel"));
+        btn.classList.add("sel");
+        QD[field] = btn.dataset.v;
+        if (btn.dataset.price)
+          document.getElementById("livePrice").textContent = btn.dataset.price;
+        // auto-advance steps 1,2,3
+        if (step < 4) setTimeout(() => goTo(step + 1), 340);
+        if (field === "dur") buildRec();
+      }
+
+      // service name maps
+      const svcMapAr = {
+        elderly: "رعاية المسنين",
+        mother: "رعاية الأم والطفل",
+        physio: "العلاج الطبيعي المنزلي",
+        surgery: "رعاية ما بعد الجراحة",
+      };
+      const svcMapEn = {
+        elderly: "Elderly Care",
+        mother: "Mother & Baby Care",
+        physio: "Physiotherapy at Home",
+        surgery: "Post-Surgery Care",
+      };
+      const priceMap = {
+        days: "190 QAR/day",
+        weeks: "165 QAR/day",
+        long: "140 QAR/day",
       };
 
-      const faders = document.querySelectorAll(".fade-up");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) e.target.classList.add("visible");
-          });
-        },
-        { threshold: 0.1 },
-      );
-      faders.forEach((f) => observer.observe(f));
+      function buildRec() {
+        const nm =
+          lang === "ar"
+            ? svcMapAr[QD.cond] || "رعاية المسنين"
+            : svcMapEn[QD.cond] || "Elderly Care";
+        const pr = priceMap[QD.dur] || "190 QAR/day";
+        document.getElementById("recName").textContent = "✅ " + nm;
+        document.getElementById("recPr").textContent = pr;
+        document.getElementById("livePrice").textContent = pr;
+        QD.service = nm;
+        QD.price = pr;
+      }
+
+      // ════════ Date validation ════════
+      function setMinDate() {
+        const d = new Date();
+        document.getElementById("cDate").min = d.toISOString().split("T")[0];
+      }
+      setMinDate();
+
+      function valDate() {
+        const dEl = document.getElementById("cDate");
+        const tEl = document.getElementById("cTime");
+        let ok = true;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const picked = dEl.value ? new Date(dEl.value) : null;
+        if (!picked || picked < today) {
+          dEl.classList.add("err");
+          document.getElementById("eDate").classList.add("show");
+          ok = false;
+        } else {
+          dEl.classList.remove("err");
+          document.getElementById("eDate").classList.remove("show");
+        }
+        if (!tEl.value) {
+          tEl.classList.add("err");
+          document.getElementById("eTime").classList.add("show");
+          ok = false;
+        } else {
+          tEl.classList.remove("err");
+          document.getElementById("eTime").classList.remove("show");
+        }
+        if (ok) goTo(5);
+      }
+
+      // ════════ Form submit ════════
+      document.getElementById("bForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const nEl = document.getElementById("pName");
+        const aEl = document.getElementById("pArea");
+        const pEl = document.getElementById("pPhone");
+        let ok = true;
+
+        const checks = [
+          ["eName", nEl, (v) => v.trim().length > 1],
+          ["eArea", aEl, (v) => v.trim().length > 1],
+          ["ePhone", pEl, (v) => /^[\d\s+()-]{8,20}$/.test(v.trim())],
+        ];
+        checks.forEach(([eid, el, fn]) => {
+          if (!fn(el.value)) {
+            el.classList.add("err");
+            document.getElementById(eid).classList.add("show");
+            ok = false;
+          } else {
+            el.classList.remove("err");
+            document.getElementById(eid).classList.remove("show");
+          }
+        });
+        if (!ok) return;
+
+        const payload = {
+          patientName: nEl.value.trim(),
+          service: QD.service || "N/A",
+          condition: QD.cond || "N/A",
+          age: QD.age || "N/A",
+          duration: QD.dur || "N/A",
+          price: QD.price || "N/A",
+          date: document.getElementById("cDate").value,
+          time: document.getElementById("cTime").value,
+          area: aEl.value.trim(),
+          phone: pEl.value.trim(),
+          lang: lang,
+          submittedAt: new Date().toISOString(),
+        };
+
+        // Show sending
+        document.getElementById("bForm").style.display = "none";
+        document.getElementById("prog-wrap-id") &&
+          (document.getElementById("prog-wrap-id").style.display = "none");
+        document.getElementById("sending").style.display = "block";
+        document.querySelector(".prog-wrap").style.display = "none";
+
+        // Send to Google Sheets
+        try {
+          if (SHEETS_URL) {
+            const fd = new FormData();
+            fd.append("payload", JSON.stringify(payload));
+            await fetch(SHEETS_URL, {
+              method: "POST",
+              mode: "no-cors",
+              body: fd,
+            });
+          }
+        } catch (err) {
+          console.warn("Sheets send failed:", err, payload);
+        }
+
+        // Also open WhatsApp pre-filled (optional confirmation)
+        setTimeout(() => {
+          document.getElementById("sending").style.display = "none";
+          document.getElementById("succScreen").style.display = "block";
+        }, 1400);
+      });
+
+      function openWA() {
+        const ph =
+          document.getElementById("pPhone")?.value?.replace(/\D/g, "") ||
+          "97451234567";
+        const svc =
+          QD.service || (lang === "ar" ? "التمريض المنزلي" : "home nursing");
+        const msg = encodeURIComponent(
+          lang === "ar"
+            ? `مرحباً CareQatar! أرغب في حجز ${svc} في قطر. الرجاء تأكيد حجزي.`
+            : `Hello CareQatar! I'd like to book ${svc} in Qatar. Please confirm my booking.`,
+        );
+        window.open(`https://wa.me/97451234567?text=${msg}`, "_blank");
+      }
+
+      function resetForm() {
+        Object.keys(QD).forEach((k) => delete QD[k]);
+        document.getElementById("bForm").reset();
+        document.getElementById("bForm").style.display = "block";
+        document.querySelector(".prog-wrap").style.display = "block";
+        document.getElementById("sending").style.display = "none";
+        document.getElementById("succScreen").style.display = "none";
+        document
+          .querySelectorAll(".qo")
+          .forEach((b) => b.classList.remove("sel"));
+        document
+          .querySelectorAll(".fc")
+          .forEach((el) => el.classList.remove("err"));
+        document
+          .querySelectorAll(".ferr")
+          .forEach((el) => el.classList.remove("show"));
+        document.getElementById("livePrice").textContent = "190 QAR/day";
+        goTo(1);
+      }
+
+      // ════════ FAQ ════════
+      function faqToggle(el) {
+        const fi = el.closest(".fi");
+        const wasOpen = fi.classList.contains("open");
+        document.querySelectorAll(".fi.open").forEach((i) => {
+          i.classList.remove("open");
+          i.querySelector(".fq").setAttribute("aria-expanded", "false");
+        });
+        if (!wasOpen) {
+          fi.classList.add("open");
+          el.setAttribute("aria-expanded", "true");
+        }
+      }
+      document.querySelectorAll(".fq").forEach((el) => {
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            faqToggle(el);
+          }
+        });
+      });
+
+      // ════════ Chat ════════
+      let chatOpen = false,
+        chatInit = false;
+      const chatWin = document.getElementById("chatWin");
+      document.getElementById("chatBtn").addEventListener("click", () => {
+        chatOpen = !chatOpen;
+        chatWin.classList.toggle("open", chatOpen);
+        if (chatOpen && !chatInit) {
+          addBot(TR[lang].chatW);
+          chatInit = true;
+        }
+      });
+      document.getElementById("chatClose").addEventListener("click", () => {
+        chatOpen = false;
+        chatWin.classList.remove("open");
+      });
+      function addBot(txt) {
+        addMsg(txt, "bot");
+      }
+      function addMsg(txt, cls) {
+        const el = document.createElement("div");
+        el.className = "cm " + cls;
+        el.textContent = txt;
+        document.getElementById("chatMsgs").appendChild(el);
+        document.getElementById("chatMsgs").scrollTop = 9999;
+      }
+      function handleChat() {
+        const inp = document.getElementById("chatIn");
+        const msg = inp.value.trim();
+        if (!msg) return;
+        addMsg(msg, "user");
+        inp.value = "";
+        const l = msg.toLowerCase();
+        setTimeout(() => {
+          const t = TR[lang];
+          if (l.match(/price|سعر|cost|تكلفة|كم|ريال/)) addBot(t.chatPR);
+          else if (l.match(/book|حجز|reserve|موعد|appointment/))
+            addBot(t.chatBK);
+          else if (l.match(/licens|ترخيص|certif|moph|qhc|معتمد/))
+            addBot(t.chatLC);
+          else addBot(t.chatDef);
+        }, 550);
+      }
+      document.getElementById("chatSend").addEventListener("click", handleChat);
+      document.getElementById("chatIn").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleChat();
+      });
+
+      // ════════ Setup Modal ════════
+      function showSetup() {
+        document.getElementById("setupModal").classList.add("open");
+        document.getElementById("sheetsUrlInput").value = SHEETS_URL;
+      }
+      function closeSetup() {
+        document.getElementById("setupModal").classList.remove("open");
+      }
+      function saveSheetsUrl() {
+        const url = document.getElementById("sheetsUrlInput").value.trim();
+        if (url) {
+          SHEETS_URL = url;
+          localStorage.setItem("cq_sheets_url", url);
+        }
+        document.getElementById("setupMsg").style.display = "block";
+        setTimeout(() => {
+          document.getElementById("setupMsg").style.display = "none";
+          closeSetup();
+        }, 1800);
+      }
+      document.getElementById("setupModal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("setupModal")) closeSetup();
+      });
+
+      // ════════ Swiper ════════
+      new Swiper(".testiS", {
+        loop: true,
+        autoplay: { delay: 4500, disableOnInteraction: false },
+        pagination: { el: ".swiper-pagination", clickable: true },
+        slidesPerView: 1,
+        spaceBetween: 18,
+        breakpoints: { 768: { slidesPerView: 2 } },
+      });
+
+      // Init
+      updateStepLabel();
     </script>
   </body>
 </html>
-```
